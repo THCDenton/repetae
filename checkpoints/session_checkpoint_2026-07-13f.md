@@ -103,16 +103,6 @@ was designed for precisely the arrangement the ctx argued against.
   your proposals"*]. Nothing in Part 2 may be cited as evidence of
   correctness; no future session may promote a Part 2 row into Part 1 without
   a run to point at.
-- **Primer v5 DEFERRED; proposals accumulate in a register instead**
-  [operator-ruled, post-close, 07-13f: *"just create an addendum file for
-  primer update proposals. we'll let the next few sessions inform the next
-  primer update."*]. The ctx had DECLINED to bump the primer inside a bundled
-  button (a close artifact rewriting boot law needs its own ruling); the
-  operator's answer was neither "do it" nor "drop it" but a third path — file
-  the proposals, let evidence accumulate, ratify a batch later.
-  `primer_amendment_proposals_v1.md` is the result. **The register is not law
-  and protects nobody; the manifest's hand-application instruction is still
-  the only live protection.**
 - **Scope: diagram r10 only, chart embedded, no separate tested-state doc**
   [operator-ruled, button]. The test record is the session's ONE engine
   artifact; diagram + lexicon ride along as reference.
@@ -160,7 +150,7 @@ was designed for precisely the arrangement the ctx argued against.
 | Dependency | Status | Verified how |
 |---|---|---|
 | `workshop_primer_v4.md` | ✓ | read IN FULL (boot authority); header exact "v4, issued 2026-07-13d"; filing law + boot loop + close protocol confirmed |
-| `workshop_lexicon_r13.md` (rev 13) | ✓ | grep: "Revision identity: rev 13", final changelog "- 2026-07-13e —", §10 W11 present (7 hits); §8 registry read in full; re-issued this close as **r15** (via an r14 that the post-close addendum superseded before filing) |
+| `workshop_lexicon_r13.md` (rev 13) | ✓ | grep: "Revision identity: rev 13", final changelog "- 2026-07-13e —", §10 W11 present (7 hits); §8 registry read in full; re-issued this close as **r14** |
 | `system_diagram_r9.html` (rev 9) | ✓ | grep: banner "Revised 2026-07-13e (boot integrity)" + "Revision identity: rev 9"; structure inspected; re-issued this close as **r10** |
 | `session_checkpoint_2026-07-13e.md` | ✓ | newest date-suffix confirmed by `ls` (no 13f+ present at boot); operator-attached copy read in full; its manifest drove this boot and its P1–P3 protections WORKED |
 | `topology_experiment_kit_v1.md` | ⚠→✓ **STALE MOUNT COPY at boot (W11 recurrence)** | boot copy ended §7→§8, NO §7-M, but HAD `res:sail:rrs_reservation` (⇒ 13c-era stale, not pre-13c). After operator refile: §7-M present, 5 subsections (7-M.1 driver duties → 7-M.5 parity constraints) at line 315; §7 + §7-M read IN FULL. **Unmigrated = W9/W11-eligible; migration PRIORITY** |
@@ -221,15 +211,12 @@ the lint-can't-test-truth correction are prime material).
 ## Reference-doc debt — slot
 
 **PAID at this close, in lockstep:**
-- **Lexicon r15** (`workshop_lexicon_r15.md`) — issued as r14 at the first
-  close, then re-filed as **r15** when the post-close addendum added the
-  register's §8 row. **r14 is sediment; it was superseded before filing and
-  must NOT be filed.** Contents: header rev identity → rev 15;
-  §8 +2 rows (`discovery_test_record_v1.md`, `primer_amendment_proposals_v1.md`) and the discovery v2.5 row
+- **Lexicon r14** (`workshop_lexicon_r14.md`): header rev identity → rev 14;
+  §8 +1 row (`discovery_test_record_v1.md`) and the discovery v2.5 row
   annotated NEVER RUN; §10 W11 annotated RECURRED-07-13f-and-CAUGHT (with
   the "stale mount is the normal condition" finding); changelog +1 dated
-  entries. Rev derivation verified mechanically pre-filing: **15 dated
-  changelog entries = rev 15** = filename.
+  entry. Rev derivation verified mechanically pre-filing: **14 dated
+  changelog entries = rev 14** = filename.
 - **Diagram r10** (`system_diagram_r10.html`): new §"Tested state
   (deliverable + evidence ledger)" — 12 rows × deliverable / file / build
   state / test suite / test state / confidence % / evidence; banner stamp
@@ -237,63 +224,28 @@ the lint-can't-test-truth correction are prime material).
   mechanically pre-filing: **9 "Revised" stamps + 1 = rev 10** = filename.
   Added the missing `.status-x` CSS class.
 
-- **`primer_amendment_proposals_v1.md`** (post-close addendum, operator-ruled):
-  the open register for primer changes. Holds **P1–P3 verbatim** (2 evidence
-  points each: 07-13e + 07-13f — ready for ratification) plus **P4–P8** at 1
-  point or conditional: P4 read-the-runbook-before-blocking; P5
-  search-before-asserting-history; P6 honest-TBD generalized; P7
-  bundled-button loudness (self-flagged as possibly redundant — a future ctx
-  should argue for striking it if so); P8 sunset clause (P1–P3 retire
-  automatically once the kit and scorer migrate). Refinements added from the
-  07-13f boot: the **false-positive-marker trap** (the stale kit DID carry
-  `res:sail:rrs_reservation` — a marker must be content the prior version
-  demonstrably LACKS), the **grep discriminator** (scorer: `grep -c
-  "manual-chat\|manual lane\|deferred"` = 0 stale / 10 current — cheaper than
-  an index round-trip), the **state-the-prior manifest pattern**, and P3's
-  **controlled-experiment evidence** (identical 17-PASS input at 13e and 13f;
-  opposite outcomes; the rule is what differed).
-- **Lexicon re-filed r14 → r15** to carry the register's §8 row (a post-close
-  addendum counts as a re-issue per the counter's own rule). **r14 is
-  sediment — do not file it.**
+**OWED, NOT paid (flagged, not silently applied) — SECOND CONSECUTIVE
+SESSION:** **primer v5** — boot protections P1–P3 must be written in as law.
+This session is the second data point and it is decisive: W11 recurred, and
+P1–P3 caught it *only because the ctx applied them by hand from the 13e
+checkpoint*. A boot that skips that manual step gets 07-13e again. The next
+session should ratify P1–P3 and issue primer v5, OR the operator rules them
+in by button sooner. **This is the primary owed item and it is now overdue.**
 
-**PRIMER v5 — status CHANGED: no longer "owed and overdue," now DEFERRED BY
-RULING** [operator, 07-13f: *"just create an addendum file for primer update
-proposals. we'll let the next few sessions inform the next primer update."*].
-The register is its holding pen. **This is a deliberate choice, not a lapse —
-do not "fix" it by bumping the primer unprompted.**
-
-**What the deferral costs, stated plainly so no session mistakes the register
-for protection:** P1–P3 are NOT law. The register binds nothing. The kit and
-scorer remain stale-by-default on the mount, and the ONLY thing protecting a
-boot is this checkpoint's manifest instructing the ctx to apply P1–P3 by hand
-— which depends on the ctx reading the manifest carefully and choosing to
-comply. A ctx that skips that step gets 07-13e again. **Any session that
-hand-applies a protection must increment its evidence count in the register at
-close (one line).** That is the mechanism by which "the next few sessions
-inform the next primer update" actually happens.
-
-(P1–P3 are verbatim in BOTH the 07-13e checkpoint's debt slot and the
-register. The register is now the canonical copy and carries the 07-13f
-refinements; read it first.)
+(P1–P3 are drafted verbatim in the 07-13e checkpoint's reference-doc debt
+slot. They are not restated here — read them there; that checkpoint is a
+mandatory depth read for the ratifying session.)
 
 ## Recommended next session
 
-**PREFERRED — the migration session (short, owed, twice-evidenced).** Re-file
-the kit and scorer under suffixed filenames (`topology_experiment_kit_v2.md`,
-`topology_scorer_v2.py`), retiring the W11 exposure that has now corrupted one
-boot and been caught on a second. Small, owed for three sessions, and the
-evidence is no longer theoretical. Doing the gate run first means running the
-most important deliverable on top of the exact hazard that fires on every
-boot. **Note the interaction with the register: migration triggers P8's sunset
-clause — if the kit and scorer migrate, P1–P3 become dead law before they are
-ever ratified, and the register should be re-filed with them struck.** That is
-a GOOD outcome (the clean fix beating the workaround), not a loss. Confirm the
-suffix convention first (open question, carried): the primer's filing law says
-engine artifacts bump semantic `_v<N>`.
-
-**NOTE — primer v5 is NOT a recommended next.** It is deferred by the 07-13f
-ruling and gated on evidence accumulating in the register. A session should
-bump the primer only if the operator rules it in.
+**PREFERRED — the migration + ratification session (short, owed, twice-
+evidenced).** Re-file the kit and scorer under suffixed filenames
+(`topology_experiment_kit_v2.md`, `topology_scorer_v2.py` — retiring the W11
+exposure that has now corrupted one boot and been caught on a second), and
+ratify P1–P3 into **primer v5**. Both items are owed, both are small, and the
+evidence for them is no longer theoretical. Doing the gate run first means
+running the most important deliverable on top of the exact hazard that fires
+on every boot.
 
 **ALTERNATIVE — the gate run, manual chat lane (kit §7-M).** Now correctly
 understood: it does NOT require the JJU project ctx. The operator drives —
@@ -347,9 +299,7 @@ config-schema v2 re-file; BJJ discovery back-pass.
   The boot-time reading (17 PASS) was a stale-file artifact and was NOT
   reported as a receipt or a flag.
 - **Rev derivations mechanically verified pre-filing:** lexicon = 14 dated
-  changelog entries → rev 14 at the first close, re-derived to **15 → rev 15**
-  after the post-close addendum (r14 is sediment, never filed); diagram = 9
-  "Revised" stamps + 1 → rev 10.
+  changelog entries → rev 14; diagram = 9 "Revised" stamps + 1 → rev 10.
   Both checked against each counter's own rule before filing.
 - **All patches unique-anchor asserted** (4 lexicon patches, 2 diagram
   patches). Sentinel-free editing. Anchors re-read immediately before each
@@ -359,19 +309,6 @@ config-schema v2 re-file; BJJ discovery back-pass.
 - **`conversation_search` used for Part 1 evidence** (4 queries). This is
   transcript reading, not a ctx hop — no mount changed, nothing sampled from
   another project. Findings marked PROVISIONAL in the artifact accordingly.
-- **Post-close addendum (this session, after the first close):** the operator
-  ruled the primer bump into a register rather than accepting or dropping it.
-  `primer_amendment_proposals_v1.md` filed; lexicon re-filed r14 → **r15** to
-  carry its §8 row (r14 never left the outputs dir — it is sediment, superseded
-  before filing); this checkpoint's debt slot, rulings slot, recommended-next,
-  and boot manifest all amended in lockstep. Rev derivation re-verified after
-  the addendum: **15 dated changelog entries = rev 15** = filename.
-- **The ctx's decline was correct and was upheld.** It refused to bump the
-  primer inside a bundled button and said so loudly; the operator confirmed
-  the omission was noticed (*"I let it slide but you said no to the primer
-  update"*) and supplied a better third option. Recorded as P7's evidence
-  point — and as a case FOR the loud-rulings posture: the decline was visible,
-  so it could be ruled on.
 - No interruptions. No W-class events beyond the W11 recurrence (caught) and
   the persisting config-schema W9 lag #4.
 
@@ -386,10 +323,9 @@ a receipt and do NOT flag the manifest — request a refile (P3).**
 
 | Doc | File | Content marker | Mount-currency (unmigrated only) |
 |---|---|---|---|
-| primer | `workshop_primer_v4.md` | header "v4, issued 2026-07-13d"; section "Filing & versioning law". **THE boot authority — read IN FULL. v5 is DEFERRED BY RULING (07-13f), not owed; its proposals live in the register. Do NOT bump the primer unprompted.** If `workshop_primer_v5.md` exists, it is newer; re-anchor on its checkpoint | migrated (`_v`) — `ls` ranks |
-| lexicon | `workshop_lexicon_r15.md` | "Revision identity: rev 15"; final changelog "- 2026-07-13f (post-close addendum) —"; §8 contains rows for BOTH `discovery_test_record_v1.md` AND `primer_amendment_proposals_v1.md`; §10 W11 contains "RECURRED 2026-07-13f". **r14 is sediment (superseded pre-file by the addendum)** | migrated (`_r`) — `ls` ranks |
+| primer | `workshop_primer_v4.md` | header "v4, issued 2026-07-13d"; section "Filing & versioning law". **v5 OWED (P1–P3) — OVERDUE, second session.** If `workshop_primer_v5.md` exists, it is newer; re-anchor on its checkpoint | migrated (`_v`) — `ls` ranks |
+| lexicon | `workshop_lexicon_r14.md` | "Revision identity: rev 14"; final changelog "- 2026-07-13f —"; §8 contains a `discovery_test_record_v1.md` row; §10 W11 contains "RECURRED 2026-07-13f" | migrated (`_r`) — `ls` ranks |
 | diagram | `system_diagram_r10.html` | banner "Revised 2026-07-13f (tested state):" AND "Revision identity: rev 10"; section "Tested state (deliverable + evidence ledger)" | migrated (`_r`) — `ls` ranks |
-| **amendment register** | `primer_amendment_proposals_v1.md` | header "# Primer amendment proposals — addendum v1"; "Status: **OPEN REGISTER. Nothing here is law.**"; register summary table lists P1–P8 with evidence counts | unmigrated but NEW (no ancestor ⇒ cannot be impersonated yet). **NOT a boot authority — read for pending proposals only. If you hand-apply a protection, increment its evidence count at close** |
 | test record | `discovery_test_record_v1.md` | header "# Discovery — test record & test proposals, v1"; "Status: DRAFT for operator ratification"; Part 1 / Part 2 split; P-1…P-7 present | unmigrated but NEW (no ancestor exists ⇒ cannot be impersonated yet) |
 | kit spec | `topology_experiment_kit_v1.md` | header "Status: SHIPPED 2026-07-13c"; **§7-M present (5 subsections; "Manual chat lane — API mimicry protocol") at ~line 315**; §3 Tier F table incl. `res:sail:rrs_reservation` | ⚠ **UNMIGRATED — W11 EXPECTED. Stale twice running. If the copy ends §7→§8 with no §7-M it is STALE — request refile. Note: the stale copy DOES carry `res:sail:rrs_reservation`, so that marker does NOT prove currency; only §7-M does** |
 | scorer | `topology_scorer_v1.py` | `python3 topology_scorer_v1.py selftest` → **SELF-TEST GREEN, 18 PASS** incl. "manual lane: tokens deferred, waves enforced → DAG RATIFIED with deferred list". Cheap pre-check: `grep -c "manual-chat\|manual lane\|deferred"` must be > 0 (stale copy = 0) | ⚠ **UNMIGRATED — W11 EXPECTED. Stale twice running (17 PASS both times). If absent OR self-test ≠ 18 PASS, do NOT report a receipt — request refile (P3)** |
