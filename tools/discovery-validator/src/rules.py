@@ -32,6 +32,25 @@ LEGAL_TAGS = frozenset({
     "default",
 })
 
+# --- Tag QUALIFIERS (fix, 2026-07-14, first real run) -----------------
+# The prompt names the tags but nowhere forbids a qualifier inside the
+# bracket. The Loeliger run wrote BOTH forms and both are compliant:
+#
+#   [mechanical]                      method stated in the line's prose
+#   [mechanical: 21 matches]          method stated inside the bracket
+#   [operator-decided, 2026-07-14]    ruling plus its date
+#
+# envelope-0 required an EXACT string match, so every qualified tag was
+# reported TAG_ILLEGAL -- 45 of 49 violations on the first real run were
+# this bug. The fixture suite missed it because the fixtures were authored
+# from the same misreading as the code.
+#
+# A tag matches if the text BEFORE the first qualifier separator is a
+# legal tag. `model-knowledge, unverified` contains a comma in the tag
+# itself, so it is matched whole before separator-splitting is attempted.
+
+TAG_QUALIFIER_SEPARATORS = (":", ",", " + ", " — ", " -- ")
+
 # Downstream only -- figure-worker output. Not emitted by discovery itself,
 # but named in the prompt, so accepted rather than flagged.
 DOWNSTREAM_TAGS = frozenset({"model-vision"})

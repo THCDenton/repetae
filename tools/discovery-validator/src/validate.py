@@ -3,7 +3,7 @@
 discovery output validator -- envelope conformance, hard-fail.
 
 Usage:
-    python3 -m src.validate --run DIR --slug SLUG
+    python3 -m src.validate check --run DIR --slug SLUG
     python3 -m src.validate selftest
 
 Verdict is binary by operator ruling (2026-07-14): ANY violation fails the
@@ -70,13 +70,61 @@ def find_tags(line):
     return TAG_RE.findall(line)
 
 
+def normalize_tag(token):
+    """Reduce a bracketed token to its base tag, or None if it isn't one.
+
+    Fix 2026-07-14 (first real run): tags may carry an inline qualifier.
+    `[mechanical: 21 matches]` is the SAME tag as `[mechanical]` -- the
+    prompt requires a method clause and never says where it must live.
+    Returns the base tag name, or None if the token is not a tag at all
+    (e.g. `[fig:3.1]`, `[p:89]`).
+    """
+    t = token.strip()
+
+    # Whole-match first: `model-knowledge, unverified` owns its comma.
+    if t in rules.ALL_ACCEPTED_TAGS:
+        return t
+
+    # A compound tag keeps its first component: `[mechanical + inferred-confirmed]`
+    for sep in rules.TAG_QUALIFIER_SEPARATORS:
+        if sep in t:
+            head = t.split(sep, 1)[0].strip()
+            if head in rules.ALL_ACCEPTED_TAGS:
+                return head
+            # `[model-knowledge, unverified -> registry queue]`
+            for legal in rules.ALL_ACCEPTED_TAGS:
+                if t.startswith(legal):
+                    return legal
+    return None
+
+
+def tag_has_method(line, token):
+    """A [mechanical] tag needs a method clause -- inside the bracket OR
+    stated in the line's prose. The prompt says 'method in one clause';
+    it does not say the clause must follow the tag.
+    """
+    if ":" in token or "," in token or "+" in token:
+        return True                       # qualifier carries it
+    body = line.split("[", 1)[0].strip()  # prose before the tag
+    return len(body.rstrip("-— ").strip()) > 0
+
+
 def is_convention_line(line):
-    """A convention line is a bulleted line inside the Conventions section.
+    """A convention line is a TOP-LEVEL bulleted line in the Conventions section.
 
     The prompt says every convention line carries exactly one tag and a bare
     line is a defect. Non-bullet prose (headers, blanks, axis titles) is not
     a convention line.
+
+    Fix 2026-07-14 (first real run): envelope-0 counted EVERY bullet at any
+    indent. Indented sub-bullets are continuations of the convention above
+    them -- they elaborate a line that already carries its own tag, and
+    re-tagging each one would be noise the prompt never asks for. On the
+    Loeliger run this over-counted by 13 (75 -> 62) and produced 13 false
+    TAG_BARE hits. An indented bullet is scoped to its parent.
     """
+    if line.startswith((" ", "\t")):
+        return False
     stripped = line.strip()
     return stripped.startswith("- ") and len(stripped) > 2
 
@@ -151,7 +199,6 @@ def check_provenance_tags(master_path, rep):
         line = lines[i]
         if not is_convention_line(line):
             continue
-        tags = [t for t in find_tags(line) if t in rules.ALL_ACCEPTED_TAGS]
         all_bracketed = find_tags(line)
 
         if not all_bracketed:
@@ -159,26 +206,32 @@ def check_provenance_tags(master_path, rep):
                      f"line {i+1}: convention line carries no tag")
             continue
 
-        illegal = [t for t in all_bracketed
-                   if t not in rules.ALL_ACCEPTED_TAGS
-                   and not t.startswith("fig:")
-                   and not re.match(r"^\d", t)]
-        for t in illegal:
-            rep.fail("TAG_ILLEGAL",
-                     f"line {i+1}: '[{t}]' is not a legal provenance tag")
+        # Map each bracketed token to a base tag (None = not a tag).
+        resolved = [(tok, normalize_tag(tok)) for tok in all_bracketed]
+        tag_tokens = [(tok, base) for tok, base in resolved if base]
 
-        if len(tags) > 1:
+        # A non-tag bracket is only illegal if the line has NO real tag --
+        # citations like [p:89] or [fig:3.1] ride alongside tags legally.
+        if not tag_tokens:
+            for tok, _ in resolved:
+                if tok.startswith("fig:") or re.match(r"^\d", tok):
+                    continue
+                rep.fail("TAG_ILLEGAL",
+                         f"line {i+1}: '[{tok}]' is not a legal provenance tag")
+            if not any(t.startswith("fig:") for t, _ in resolved):
+                rep.fail("TAG_BARE",
+                         f"line {i+1}: convention line carries no provenance tag")
+            continue
+
+        if len(tag_tokens) > 1:
             rep.fail("TAG_MULTIPLE",
-                     f"line {i+1}: {len(tags)} provenance tags, expected 1")
-        elif len(tags) == 0 and not illegal:
-            rep.fail("TAG_BARE",
-                     f"line {i+1}: convention line carries no provenance tag")
+                     f"line {i+1}: {len(tag_tokens)} provenance tags, expected 1")
 
-        # [mechanical] requires a method clause
-        if "mechanical" in tags:
-            after = line.split("[mechanical]", 1)[-1].strip()
-            rep.check(len(after) > 0, "TAG_MECHANICAL_NO_METHOD",
-                      f"line {i+1}: [mechanical] without method clause")
+        # [mechanical] requires a method clause -- in the bracket or the prose.
+        for tok, base in tag_tokens:
+            if base == "mechanical" and not tag_has_method(line, tok):
+                rep.fail("TAG_MECHANICAL_NO_METHOD",
+                         f"line {i+1}: [mechanical] without method clause")
 
 
 def check_forecast_quarantine(run_dir, slug, rep):
