@@ -1,0 +1,180 @@
+chunk_id,boundary_type,loc_start,loc_end,est_size,notes
+ch6-001,convention,p:104,p:104,~83 tok median / 144 p90,dictionary entry f
+ch6-002,convention,p:104,p:104,~83 tok median / 144 p90,dictionary entry #
+ch6-003,convention,p:105,p:105,~83 tok median / 144 p90,dictionary entry #>
+ch6-004,convention,p:105,p:105,~83 tok median / 144 p90,dictionary entry #S
+ch6-005,convention,p:105,p:105,~83 tok median / 144 p90,dictionary entry $CRLF
+ch6-006,convention,p:106,p:106,~83 tok median / 144 p90,dictionary entry $ECHO
+ch6-007,convention,p:106,p:106,~83 tok median / 144 p90,dictionary entry SISIGN
+ch6-008,convention,p:107,p:107,~83 tok median / 144 p90,dictionary entry $KEY
+ch6-009,convention,p:107,p:107,~83 tok median / 144 p90,dictionary entry SOSIGN
+ch6-010,convention,p:107,p:107,~83 tok median / 144 p90,dictionary entry $UD*
+ch6-011,convention,p:108,p:108,~83 tok median / 144 p90,dictionary entry $US*
+ch6-012,convention,p:108,p:108,~83 tok median / 144 p90,dictionary entry $UD/
+ch6-013,convention,p:109,p:109,~83 tok median / 144 p90,dictionary entry $US/
+ch6-014,convention,p:110,p:110,~83 tok median / 144 p90,dictionary entry ' (tick)
+ch6-015,convention,p:110,p:110,~83 tok median / 144 p90,dictionary entry * (asterisk)
+ch6-016,convention,p:111,p:111,~83 tok median / 144 p90,dictionary entry *#
+ch6-017,convention,p:111,p:111,~83 tok median / 144 p90,dictionary entry * +LOOP
+ch6-018,convention,p:111,p:111,~83 tok median / 144 p90,dictionary entry V
+ch6-019,convention,p:112,p:112,~83 tok median / 144 p90,dictionary entry */MOD
+ch6-020,convention,p:113,p:113,~83 tok median / 144 p90,dictionary entry *C#
+ch6-021,convention,p:113,p:113,~83 tok median / 144 p90,dictionary entry *C + LOOP
+ch6-022,convention,p:113,p:113,~83 tok median / 144 p90,dictionary entry *CDO
+ch6-023,convention,p:114,p:114,~83 tok median / 144 p90,dictionary entry * CLEAVE
+ch6-024,convention,p:114,p:114,~83 tok median / 144 p90,dictionary entry *CLOOP
+ch6-025,convention,p:115,p:115,~83 tok median / 144 p90,dictionary entry *DO
+ch6-026,convention,p:115,p:115,~83 tok median / 144 p90,dictionary entry *ELSE
+ch6-027,convention,p:116,p:116,~83 tok median / 144 p90,dictionary entry *END
+ch6-028,convention,p:116,p:116,~83 tok median / 144 p90,dictionary entry *IF
+ch6-029,convention,p:117,p:117,~83 tok median / 144 p90,dictionary entry * LEAVE
+ch6-030,convention,p:117,p:117,~83 tok median / 144 p90,dictionary entry *LOOP
+ch6-031,convention,p:118,p:118,~83 tok median / 144 p90,dictionary entry *SYS
+ch6-032,convention,p:118,p:118,~83 tok median / 144 p90,dictionary entry *WFHLE
+ch6-033,convention,p:119,p:119,~83 tok median / 144 p90,dictionary entry *[
+ch6-034,convention,p:119,p:119,~83 tok median / 144 p90,dictionary entry +
+ch6-035,convention,p:119,p:119,~83 tok median / 144 p90,dictionary entry +!
+ch6-036,convention,p:120,p:120,~83 tok median / 144 p90,dictionary entry + LOOP
+ch6-037,convention,p:120,p:120,~83 tok median / 144 p90,dictionary entry + SP
+ch6-038,convention,p:121,p:121,~83 tok median / 144 p90,"dictionary entry , (comma)"
+ch6-039,convention,p:121,p:121,~83 tok median / 144 p90,dictionary entry Bytes:
+ch6-040,convention,p:121,p:121,~83 tok median / 144 p90,dictionary entry -SP
+ch6-041,convention,p:122,p:122,~83 tok median / 144 p90,dictionary entry • (period)
+ch6-042,convention,p:122,p:122,~83 tok median / 144 p90,dictionary entry .R
+ch6-043,convention,p:123,p:123,~83 tok median / 144 p90,dictionary entry ~
+ch6-044,convention,p:123,p:123,~83 tok median / 144 p90,dictionary entry /MOD
+ch6-045,convention,p:124,p:124,~83 tok median / 144 p90,dictionary entry 0<
+ch6-046,convention,p:124,p:124,~83 tok median / 144 p90,dictionary entry 0=
+ch6-047,convention,p:124,p:124,~83 tok median / 144 p90,dictionary entry OSET
+ch6-048,convention,p:125,p:125,~83 tok median / 144 p90,dictionary entry 1+
+ch6-049,convention,p:125,p:125,~83 tok median / 144 p90,dictionary entry 1-
+ch6-050,convention,p:125,p:125,~83 tok median / 144 p90,dictionary entry 1SET
+ch6-051,convention,p:126,p:126,~83 tok median / 144 p90,dictionary entry 2*
+ch6-052,convention,p:126,p:126,~83 tok median / 144 p90,dictionary entry 2+
+ch6-053,convention,p:126,p:126,~83 tok median / 144 p90,dictionary entry 2-
+ch6-054,convention,p:127,p:127,~83 tok median / 144 p90,dictionary entry 2/
+ch6-055,convention,p:127,p:127,~83 tok median / 144 p90,dictionary entry 2DUP
+ch6-056,convention,p:127,p:127,~83 tok median / 144 p90,dictionary entry 20VER
+ch6-057,convention,p:128,p:128,~83 tok median / 144 p90,dictionary entry 2SWAP
+ch6-058,convention,p:128,p:128,~83 tok median / 144 p90,dictionary entry ~
+ch6-059,convention,p:128,p:128,~83 tok median / 144 p90,dictionary entry ~
+ch6-060,convention,p:129,p:129,~83 tok median / 144 p90,dictionary entry ;CODE
+ch6-061,convention,p:129,p:129,~83 tok median / 144 p90,dictionary entry <
+ch6-062,convention,p:130,p:130,~83 tok median / 144 p90,dictionary entry <#
+ch6-063,convention,p:130,p:130,~83 tok median / 144 p90,dictionary entry < BUILDS
+ch6-064,convention,p:130,p:130,~83 tok median / 144 p90,dictionary entry <R
+ch6-065,convention,p:131,p:131,~83 tok median / 144 p90,dictionary entry ~
+ch6-066,convention,p:131,p:131,~83 tok median / 144 p90,dictionary entry >
+ch6-067,convention,p:132,p:132,~83 tok median / 144 p90,dictionary entry ?
+ch6-068,convention,p:132,p:132,~83 tok median / 144 p90,dictionary entry ?RS
+ch6-069,convention,p:132,p:132,~83 tok median / 144 p90,dictionary entry ?SP
+ch6-070,convention,p:133,p:133,~83 tok median / 144 p90,dictionary entry @
+ch6-071,convention,p:133,p:133,~83 tok median / 144 p90,dictionary entry ABORT
+ch6-072,convention,p:133,p:133,~83 tok median / 144 p90,dictionary entry ABS
+ch6-073,convention,p:134,p:134,~83 tok median / 144 p90,dictionary entry ADUMP
+ch6-074,convention,p:134,p:134,~83 tok median / 144 p90,dictionary entry AND
+ch6-075,convention,p:135,p:135,~83 tok median / 144 p90,dictionary entry APART
+ch6-076,convention,p:135,p:135,~83 tok median / 144 p90,dictionary entry ASCII
+ch6-077,convention,p:136,p:136,~83 tok median / 144 p90,dictionary entry ASPACE
+ch6-078,convention,p:136,p:136,~83 tok median / 144 p90,dictionary entry BASE
+ch6-079,convention,p:136,p:136,~83 tok median / 144 p90,dictionary entry BEGIN
+ch6-080,convention,p:137,p:137,~83 tok median / 144 p90,dictionary entry BINARY
+ch6-081,convention,p:137,p:137,~83 tok median / 144 p90,dictionary entry C!
+ch6-082,convention,p:137,p:137,~83 tok median / 144 p90,dictionary entry C+!
+ch6-083,convention,p:138,p:138,~83 tok median / 144 p90,dictionary entry C+LOOP
+ch6-084,convention,p:138,p:138,~83 tok median / 144 p90,"dictionary entry C,"
+ch6-085,convention,p:139,p:139,~83 tok median / 144 p90,dictionary entry COSET
+ch6-086,convention,p:139,p:139,~83 tok median / 144 p90,dictionary entry ClSET
+ch6-087,convention,p:139,p:139,~83 tok median / 144 p90,dictionary entry C<R
+ch6-088,convention,p:140,p:140,~83 tok median / 144 p90,dictionary entry C?
+ch6-089,convention,p:140,p:140,~83 tok median / 144 p90,dictionary entry C@
+ch6-090,convention,p:140,p:140,~83 tok median / 144 p90,dictionary entry CA!
+ch6-091,convention,p:141,p:141,~83 tok median / 144 p90,dictionary entry CCONSTANT
+ch6-092,convention,p:141,p:141,~83 tok median / 144 p90,dictionary entry CDO
+ch6-093,convention,p:141,p:141,~83 tok median / 144 p90,dictionary entry CI>
+ch6-094,convention,p:142,p:142,~83 tok median / 144 p90,dictionary entry CJ>
+ch6-095,convention,p:142,p:142,~83 tok median / 144 p90,dictionary entry CJOIN
+ch6-096,convention,p:143,p:143,~83 tok median / 144 p90,dictionary entry CK>
+ch6-097,convention,p:143,p:143,~83 tok median / 144 p90,dictionary entry CLEAR
+ch6-098,convention,p:143,p:143,~83 tok median / 144 p90,dictionary entry CLEAVE
+ch6-099,convention,p:144,p:144,~83 tok median / 144 p90,dictionary entry CLOOP
+ch6-100,convention,p:144,p:144,~83 tok median / 144 p90,dictionary entry COMPILER
+ch6-101,convention,p:144,p:144,~83 tok median / 144 p90,dictionary entry CONSTANT
+ch6-102,convention,p:145,p:145,~83 tok median / 144 p90,dictionary entry CONTEXT
+ch6-103,convention,p:145,p:145,~83 tok median / 144 p90,dictionary entry CORE
+ch6-104,convention,p:146,p:146,~83 tok median / 144 p90,dictionary entry CR>
+ch6-105,convention,p:146,p:146,~83 tok median / 144 p90,dictionary entry CREATE
+ch6-106,convention,p:147,p:147,~83 tok median / 144 p90,dictionary entry CRET
+ch6-107,convention,p:147,p:147,~83 tok median / 144 p90,dictionary entry CSPLIT
+ch6-108,convention,p:147,p:147,~83 tok median / 144 p90,dictionary entry CURRENT
+ch6-109,convention,p:148,p:148,~83 tok median / 144 p90,dictionary entry CVARIABLE
+ch6-110,convention,p:148,p:148,~83 tok median / 144 p90,dictionary entry D*
+ch6-111,convention,p:149,p:149,~83 tok median / 144 p90,dictionary entry D/MOD
+ch6-112,convention,p:150,p:150,~83 tok median / 144 p90,dictionary entry DECIMAL
+ch6-113,convention,p:150,p:150,~83 tok median / 144 p90,dictionary entry DEFINITIONS
+ch6-114,convention,p:150,p:150,~83 tok median / 144 p90,dictionary entry DISPLAY
+ch6-115,convention,p:151,p:151,~83 tok median / 144 p90,dictionary entry DO
+ch6-116,convention,p:151,p:151,~83 tok median / 144 p90,"dictionary entry DO,"
+ch6-117,convention,p:151,p:151,~83 tok median / 144 p90,dictionary entry DOES>
+ch6-118,convention,p:152,p:152,~83 tok median / 144 p90,dictionary entry DP
+ch6-119,convention,p:152,p:152,~83 tok median / 144 p90,dictionary entry DROP
+ch6-120,convention,p:153,p:153,~83 tok median / 144 p90,dictionary entry DUMP
+ch6-121,convention,p:153,p:153,~83 tok median / 144 p90,dictionary entry DUP
+ch6-122,convention,p:154,p:154,~83 tok median / 144 p90,dictionary entry ECHO
+ch6-123,convention,p:154,p:154,~83 tok median / 144 p90,dictionary entry ELSE
+ch6-124,convention,p:154,p:154,~83 tok median / 144 p90,dictionary entry END
+ch6-125,convention,p:155,p:155,~83 tok median / 144 p90,"dictionary entry END,"
+ch6-126,convention,p:155,p:155,~83 tok median / 144 p90,dictionary entry ENTRY
+ch6-127,convention,p:155,p:155,~83 tok median / 144 p90,dictionary entry ERASE
+ch6-128,convention,p:156,p:156,~83 tok median / 144 p90,dictionary entry EXECUTE
+ch6-129,convention,p:156,p:156,~83 tok median / 144 p90,dictionary entry FILL
+ch6-130,convention,p:157,p:157,~83 tok median / 144 p90,dictionary entry FORGET
+ch6-131,convention,p:157,p:157,~83 tok median / 144 p90,dictionary entry HERE
+ch6-132,convention,p:158,p:158,~83 tok median / 144 p90,dictionary entry HEX
+ch6-133,convention,p:158,p:158,~83 tok median / 144 p90,dictionary entry I>
+ch6-134,convention,p:158,p:158,~83 tok median / 144 p90,dictionary entry IF
+ch6-135,convention,p:159,p:159,~83 tok median / 144 p90,dictionary entry IMMEDIATE
+ch6-136,convention,p:159,p:159,~83 tok median / 144 p90,dictionary entry IOR
+ch6-137,convention,p:160,p:160,~83 tok median / 144 p90,dictionary entry I>
+ch6-138,convention,p:160,p:160,~83 tok median / 144 p90,dictionary entry K>
+ch6-139,convention,p:161,p:161,~83 tok median / 144 p90,dictionary entry KEY
+ch6-140,convention,p:161,p:161,~83 tok median / 144 p90,dictionary entry LBP
+ch6-141,convention,p:161,p:161,~83 tok median / 144 p90,dictionary entry LEAVE
+ch6-142,convention,p:162,p:162,~83 tok median / 144 p90,dictionary entry LOOP
+ch6-143,convention,p:162,p:162,~83 tok median / 144 p90,dictionary entry LROT
+ch6-144,convention,p:162,p:162,~83 tok median / 144 p90,dictionary entry MAX
+ch6-145,convention,p:163,p:163,~83 tok median / 144 p90,dictionary entry MIN
+ch6-146,convention,p:163,p:163,~83 tok median / 144 p90,dictionary entry MINUS
+ch6-147,convention,p:163,p:163,~83 tok median / 144 p90,dictionary entry MOD
+ch6-148,convention,p:164,p:164,~83 tok median / 144 p90,dictionary entry MODE
+ch6-149,convention,p:164,p:164,~83 tok median / 144 p90,dictionary entry MODU/
+ch6-150,convention,p:165,p:165,~83 tok median / 144 p90,dictionary entry MOVE
+ch6-151,convention,p:166,p:166,~83 tok median / 144 p90,dictionary entry NEXT
+ch6-152,convention,p:166,p:166,~83 tok median / 144 p90,dictionary entry NOT
+ch6-153,convention,p:166,p:166,~83 tok median / 144 p90,dictionary entry OCTAL
+ch6-154,convention,p:167,p:167,~83 tok median / 144 p90,dictionary entry OVER
+ch6-155,convention,p:167,p:167,~83 tok median / 144 p90,dictionary entry PART
+ch6-156,convention,p:167,p:167,~83 tok median / 144 p90,dictionary entry R>
+ch6-157,convention,p:168,p:168,~83 tok median / 144 p90,dictionary entry RROT
+ch6-158,convention,p:168,p:168,~83 tok median / 144 p90,dictionary entry S*
+ch6-159,convention,p:169,p:169,~83 tok median / 144 p90,dictionary entry SCODE
+ch6-160,convention,p:169,p:169,~83 tok median / 144 p90,dictionary entry SIGN
+ch6-161,convention,p:169,p:169,~83 tok median / 144 p90,dictionary entry SINGLE
+ch6-162,convention,p:170,p:170,~83 tok median / 144 p90,dictionary entry SPACE
+ch6-163,convention,p:170,p:170,~83 tok median / 144 p90,dictionary entry STATE
+ch6-164,convention,p:171,p:171,~83 tok median / 144 p90,dictionary entry SWAP
+ch6-165,convention,p:171,p:171,~83 tok median / 144 p90,dictionary entry THEN
+ch6-166,convention,p:171,p:171,~83 tok median / 144 p90,dictionary entry TYPE
+ch6-167,convention,p:172,p:172,~83 tok median / 144 p90,dictionary entry VARIABLE
+ch6-168,convention,p:172,p:172,~83 tok median / 144 p90,dictionary entry VOCABULARY
+ch6-169,convention,p:173,p:173,~83 tok median / 144 p90,dictionary entry WAIT
+ch6-170,convention,p:173,p:173,~83 tok median / 144 p90,dictionary entry WHILE
+ch6-171,convention,p:173,p:173,~83 tok median / 144 p90,dictionary entry XOR
+ch6-172,convention,p:174,p:174,~83 tok median / 144 p90,dictionary entry ~
+ch1-sec,section,p:1,p:8,~2608 tok,OVERVIEW; split at numbered sections; fallback_max 1200 tok
+ch2-sec,section,p:9,p:28,~6520 tok,HOW A TIL WORKS; split at numbered sections; fallback_max 1200 tok
+ch3-sec,section,p:29,p:38,~3260 tok,"HUP, TWO, THREE, FOUR; split at numbered sections; fallback_max 1200 tok"
+ch4-sec,section,p:39,p:74,~11736 tok,THE TOWER OF BABEL REVISITED; split at numbered sections; fallback_max 1200 tok
+ch5-sec,section,p:75,p:102,~9128 tok,"ROUTINES, ROUTINES, ROUTINES; split at numbered sections; fallback_max 1200 tok"
+ch7-sec,section,p:183,p:234,~16952 tok,EXTENSION PLEASE; split at numbered sections; fallback_max 1200 tok
+ch8-sec,section,p:235,p:244,~3260 tok,LIFE WITH A TIL; split at numbered sections; fallback_max 1200 tok

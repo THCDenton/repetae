@@ -1,0 +1,11 @@
+section,loc_start,loc_end,mode,notes
+ch1,p:1,p:8,prose,"Overview; narrative intro, no listings"
+ch2,p:9,p:28,mixed,Concept prose + dictionary/memory diagrams + Forth-style source examples w/ block-space glyph
+ch3,p:29,p:38,mixed,Inner interpreter; Z80 AND 6800 listings side by side; NEXT taught here
+ch4,p:39,p:74,mixed,Keyword taxonomy; prose + short listings + syntax examples
+ch5,p:75,p:102,code_listing,"Densest listing chapter; annotated Z80/6800 routines, 4-col label/op/operand/comment"
+ch6,p:103,p:182,tabular,172 templated dictionary entries: Class/Function/Input-Output/Usage/Z80 Code/BYTES/Notes
+ch7,p:183,p:234,mixed,"Extensions: assembler, floating point, strings; heavy listings + operand tables"
+ch8,p:235,p:244,prose,Practice/method; minimal code
+bib,p:245,p:248,prose,OUT OF SCOPE [operator-decided]
+index,p:249,p:251,tabular,OUT OF SCOPE [operator-decided]; consumed as native seed only
