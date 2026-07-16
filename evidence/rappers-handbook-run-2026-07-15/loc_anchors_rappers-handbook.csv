@@ -1,0 +1,37 @@
+loc,pdf_page,printed_page,part,chapter,running_head,notes
+p2,12,2,One,Intro,suppressed,part opener region
+p3,13,3,One,Guide to Freestyling,recto,
+p14,24,14,One,Cipher Etiquette 101,recto,
+p17,27,17,One,Freestyle Rap Games,recto,
+p22,32,22,Two,Intro,suppressed,part opener p31 full-bleed art
+p23,33,23,Two,Analyze,recto,
+p25,35,25,Two,Slant Rhyme,recto,
+p32,42,32,Two,Rhyme Scheme,verso,
+p35,45,35,Two,In-Rhyme,recto,
+p39,49,39,Two,Multis,recto,sole [BASIC]/[ADVANCED] tier markers
+p54,64,54,Two,Wordplay,verso,
+p63,73,63,Two,Metaphors,recto,
+p74,84,74,Two,Vocabulary,verso,
+p79,89,79,Two,References,recto,
+p86,96,86,Two,Alliteration,verso,Other Techniques sub-group begins
+p88,98,88,Two,Personification,verso,
+p93,103,93,Two,Repeating Words + Visual Wordplay,recto,SHARED PAGE - two chapters begin here
+p95,105,95,Two,Rhyming Nonsense Words,recto,
+p98,108,98,Three,Guide to Flow,verso,part opener p107 full-bleed art
+p110,120,110,Three,History of Flow,verso,
+p122,132,122,Three,Hand Gestures,verso,visual-dependent chapter begins
+p135,145,135,Three,Move the Crowd,recto,
+p140,150,140,Four,Intro,verso,part opener p149 full-bleed art
+p142,152,142,Four,Guide to Battling,verso,
+p147,157,147,Four,Guide to Battling (Personal Punches),recto,fallback_split boundary
+p159,169,159,Four,Punch Lines,recto,
+p168,178,168,Five,Setting up a Studio,verso,
+p180,190,180,Five,On the Mic,verso,
+p186,196,186,Six,Why Spit Rhymes,verso,part opener p195 full-bleed art
+p189,199,189,Six,The Cure for Writer's Block,recto,
+p199,209,199,Six,How to Write a Song,recto,
+p209,219,209,back,Discography and Credits,recto,rights-clearance block
+p213,223,213,back,Sources,recto,
+p215,225,215,back,Appendix I,recto,TWO-COLUMN list zone
+p218,228,218,back,Appendix II,verso,
+p219,229,219,back,Appendix III,recto,

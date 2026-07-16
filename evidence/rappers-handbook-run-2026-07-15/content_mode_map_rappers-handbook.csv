@@ -1,0 +1,36 @@
+loc_start,loc_end,chapter,mode,notes
+p2,p2,Part One intro,prose,~
+p3,p13,Guide to Freestyling,mixed,prose + ruled drills + lyric exhibits
+p14,p16,Cipher Etiquette 101,prose,social rules of the cipher
+p17,p21,Freestyle Rap Games,mixed,ruled game procedures + prose
+p22,p22,Part Two intro,prose,~
+p23,p24,Analyze,prose,~
+p25,p31,Slant Rhyme,mixed,prose + bold-marked lyric scansion
+p32,p34,Rhyme Scheme,mixed,prose + bold-marked lyric scansion
+p35,p38,In-Rhyme,mixed,prose + bold-marked lyric scansion
+p39,p53,Multis,mixed,densest scansion; sole tier-marked chapter
+p54,p62,Wordplay,mixed,prose + lyric scansion
+p63,p73,Metaphors,mixed,prose + lyric scansion
+p74,p78,Vocabulary,mixed,prose + word lists
+p79,p85,References,mixed,prose + lyric scansion
+p86,p87,Alliteration,mixed,Other Techniques sub-group
+p88,p92,Personification,mixed,Other Techniques sub-group
+p93,p94,Repeating Words + Visual Wordplay,mixed,shared-page merge; Visual Wordplay is text-battle only
+p95,p97,Rhyming Nonsense Words,mixed,Other Techniques sub-group
+p98,p109,Guide to Flow,mixed,prose + scansion; 'flow' fan-out epicenter
+p110,p121,History of Flow,mixed,chronological prose + era lyric exhibits
+p122,p134,Hand Gestures,mixed,"procedural prose + load-bearing illustrations; p126 heading+art only"
+p135,p139,Move the Crowd,prose,performance guidance
+p140,p141,Part Four intro,prose,~
+p142,p158,Guide to Battling,mixed,prose + dialogic battle exchanges + scansion
+p159,p167,Punch Lines,mixed,prose + lyric exhibits
+p168,p179,Setting up a Studio,mixed,2009 gear prose + equipment lists
+p180,p185,On the Mic,prose,recording technique; 'flow' collision range
+p186,p188,Why Spit Rhymes,prose,~
+p189,p198,The Cure for Writer's Block,mixed,prose + ruled exercises
+p199,p208,How to Write a Song,mixed,prose + ruled procedure
+p209,p212,Discography and Credits,tabular,per-song rights-clearance entries
+p213,p214,Sources,tabular,bibliography entries
+p215,p217,Appendix I,tabular,"TWO-COLUMN idiom list + single-column intro para (mixed zone)"
+p218,p218,Appendix II,tabular,bold headword + rhyme-set list
+p219,p220,Appendix III,tabular,bold headword + rhyme-set list

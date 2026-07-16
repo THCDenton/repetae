@@ -1,0 +1,37 @@
+chunk_id,boundary_type,loc_start,loc_end,est_size,notes
+ch01,chapter,p2,p2,230,Part One intro
+ch02,chapter,p3,p13,2886,Guide to Freestyling
+ch03,chapter,p14,p16,825,Cipher Etiquette 101
+ch04,chapter,p17,p21,911,Freestyle Rap Games; ruled-procedure class
+ch05,chapter,p22,p22,108,Part Two intro
+ch06,chapter,p23,p24,267,Analyze
+ch07,chapter,p25,p31,1679,Slant Rhyme
+ch08,chapter,p32,p34,814,Rhyme Scheme
+ch09,chapter,p35,p38,885,In-Rhyme; bold-scansion dense
+ch10,chapter,p39,p53,3457,Multis; densest teaching chapter; sole [BASIC]/[ADVANCED] tier split
+ch11,chapter,p54,p62,2035,Wordplay
+ch12,chapter,p63,p73,2370,Metaphors
+ch13,chapter,p74,p78,1388,Vocabulary
+ch14,chapter,p79,p85,1658,References
+ch15,chapter,p86,p87,559,Alliteration
+ch16,chapter,p88,p92,1264,Personification
+ch17,convention,p93,p94,866,"Repeating Words + Visual Wordplay merged: both begin on printed p93 (Visual Wordplay starts mid-page). Page-level loc-grammar cannot split a shared page; merged at the book's own 'Other Techniques' sub-group boundary (running head confirms). Ruled boundary = one Other-Techniques sub-group."
+ch19,chapter,p95,p97,149,Rhyming Nonsense Words
+ch20,chapter,p98,p109,3330,Guide to Flow; fan-out epicenter for 'flow'
+ch21,chapter,p110,p121,3318,History of Flow
+ch22,chapter,p122,p134,1883,Hand Gestures; VISUAL-DEPENDENT - text alone under-teaches
+ch23,chapter,p135,p139,862,Move the Crowd
+ch24,chapter,p140,p141,487,Part Four intro
+ch25,fallback_split,p142,p146,1400,"Guide to Battling 1/2; chapter=4903 tok exceeds ruled 4500 bound; split at book's own heading 'How to Use Personal Punches' (p147)"
+ch26,fallback_split,p147,p158,3503,"Guide to Battling 2/2; see ch25"
+ch27,chapter,p159,p167,2014,Punch Lines
+ch28,chapter,p168,p179,2676,Setting up a Studio; era-bound 2009 gear; IN SCOPE per operator
+ch29,chapter,p180,p185,1535,On the Mic; 'flow' collision range
+ch30,chapter,p186,p188,770,Why Spit Rhymes
+ch31,chapter,p189,p198,2473,The Cure for Writer's Block
+ch32,chapter,p199,p208,2423,How to Write a Song
+ch33,chapter,p209,p212,758,Discography and Credits; rights-clearance block; registry anchor source
+ch34,chapter,p213,p214,331,Sources
+ch35,chapter,p215,p217,639,"Appendix I; TWO-COLUMN list zone - requires zone-scoped bisect repair; native seed"
+ch36,chapter,p218,p218,206,Appendix II
+ch37,chapter,p219,p220,191,Appendix III
