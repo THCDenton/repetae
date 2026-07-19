@@ -39,6 +39,38 @@ LEGAL_TAGS = frozenset({
     "default",
 })
 
+# --- Mechanical STRENGTH GRADES (v2.8, graded-tag lint 2026-07-19) ----
+# discovery_prompt_v2_8.md, Provenance tags: a [mechanical: ...] tag must
+# end in a strength grade, machine-extractable from the tag. The grade is
+# the LAST ';'-delimited clause inside the bracket. Grade added v2.7;
+# enforced here in chunk 2.
+#
+#   exhaustive -- count covers every site the claim ranges over; one
+#                 counter-example would falsify it.
+#   sampled    -- count covers a stated subset; holds on what was checked.
+#   partial    -- count is real but does not settle the claim (proxy, or
+#                 the claim ranges wider than the count). A partial grade
+#                 on a universal claim is itself a defect -- checked by the
+#                 partial-on-universal lint, NOT here.
+LEGAL_GRADES = frozenset({"exhaustive", "sampled", "partial"})
+MECHANICAL_GRADE_SEPARATOR = ";"
+
+# --- Universal quantifiers (partial-on-universal lint, v2.8) ----------
+# discovery_prompt_v2_8.md, Provenance tags: "A partial grade on a
+# universal ('always', 'every', 'never') is a defect." The rappers-handbook
+# audit generalized this: a claim carrying a universal, backed by a partial
+# count, must carry the exception column or be downgraded to "usually/most"
+# (evidence/discovery_eval_findings_rappers-handbook.md, generalizable rule).
+#
+# Scope is deliberately TIGHT and spec-anchored. Bare "fixed" and
+# "throughout" are EXCLUDED: they appear in innocent prose (the valid
+# fixture's "title case throughout" is exhaustive-graded and true), and a
+# loose vocabulary would false-flag. Matched case-insensitively as whole
+# words / phrases.
+UNIVERSAL_QUANTIFIERS = (
+    "always", "every", "never", "invariant", "fixed frame",
+)
+
 # --- Tag QUALIFIERS (fix, 2026-07-14, first real run) -----------------
 # The prompt names the tags but nowhere forbids a qualifier inside the
 # bracket. The Loeliger run wrote BOTH forms and both are compliant:

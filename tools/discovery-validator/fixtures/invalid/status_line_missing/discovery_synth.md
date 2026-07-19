@@ -8,8 +8,8 @@ Ratified on 2026-07-14.
 - Source is a single-volume instructional text, no companion volumes [inferred-confirmed]
 
 ### Naming
-- Chapter headings use title case throughout; 14 of 14 sampled [mechanical: counted across the anchor table]
-- Aliases appear as parenthetical glosses on first use [mechanical: census of 62 first-use sites]
+- Chapter headings use title case throughout; 14 of 14 sampled [mechanical: counted across the anchor table; exhaustive]
+- Aliases appear as parenthetical glosses on first use [mechanical: census of 62 first-use sites; exhaustive]
 - Domain convention favours the long form in headings [model-knowledge, unverified]
 
 ### Scope
@@ -29,10 +29,10 @@ Ratified on 2026-07-14.
 - Expected entity count ~180, openness class moderate, heuristic [default]
 
 ## Config fragment
-- sources[] entry and ingest block emitted below [mechanical: transcribed from the preflight]
+- sources[] entry and ingest block emitted below [mechanical: transcribed from the preflight; exhaustive]
 
 ## Kit nominations
-- ch.3 tack collision — tests reduce-side sense merge [mechanical: selected from the watchlist]
+- ch.3 tack collision — tests reduce-side sense merge [mechanical: selected from the watchlist; sampled]
 
 ## Sidecar manifest
 - harvest_brief_synth.md

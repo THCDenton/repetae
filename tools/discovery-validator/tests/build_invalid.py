@@ -72,15 +72,34 @@ def _(d):
     edit(d / "discovery_synth.md",
          "- Front matter and index are out of scope [default]",
          "- Front matter and index are out of scope [default] "
-         "[mechanical: x count]")
+         "[mechanical: x count; sampled]")
 
 
 @case("TAG_MECHANICAL_NO_METHOD")
 def _(d):
     edit(d / "discovery_synth.md",
          "- Aliases appear as parenthetical glosses on first use "
-         "[mechanical: census of 62 first-use sites]",
+         "[mechanical: census of 62 first-use sites; exhaustive]",
          "- Aliases appear as parenthetical glosses on first use [mechanical]")
+
+
+@case("TAG_NO_GRADE")
+def _(d):
+    # method intact, grade removed -> TAG_NO_GRADE alone (not NO_METHOD).
+    edit(d / "discovery_synth.md",
+         "[mechanical: counted across the anchor table; exhaustive]",
+         "[mechanical: counted across the anchor table]")
+
+
+@case("TAG_PARTIAL_UNIVERSAL")
+def _(d):
+    # the rappers-handbook class: universal claim + a well-formed `partial`
+    # count. Grade is legal, so TAG_NO_GRADE cannot co-fire.
+    edit(d / "discovery_synth.md",
+         "- Aliases appear as parenthetical glosses on first use "
+         "[mechanical: census of 62 first-use sites; exhaustive]",
+         "- Aliases always appear as parenthetical glosses on first use "
+         "[mechanical: census of 62 first-use sites; partial]")
 
 
 @case("FORECAST_LEAK")

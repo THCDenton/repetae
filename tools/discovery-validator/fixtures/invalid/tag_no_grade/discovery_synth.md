@@ -8,12 +8,12 @@ Status: conventions ratified 2026-07-14, discovery_prompt_v2.5.
 - Source is a single-volume instructional text, no companion volumes [inferred-confirmed]
 
 ### Naming
-- Chapter headings use title case throughout; 14 of 14 sampled [mechanical: counted across the anchor table; exhaustive]
+- Chapter headings use title case throughout; 14 of 14 sampled [mechanical: counted across the anchor table]
 - Aliases appear as parenthetical glosses on first use [mechanical: census of 62 first-use sites; exhaustive]
 - Domain convention favours the long form in headings [model-knowledge, unverified]
 
 ### Scope
-- Front matter and index are out of scope
+- Front matter and index are out of scope [default]
 
 ## Ambiguity forecast
 - tack — fan-out expected, two senses taught in ch.3 and ch.7 [discovery-forecast]

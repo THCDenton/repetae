@@ -126,6 +126,47 @@ def tag_has_method(line, token):
     return False
 
 
+def tag_grade(token):
+    """The strength grade of a [mechanical] tag, or None if absent/illegal.
+
+    v2.8 (graded-tag lint, chunk 2): a [mechanical: <method>; <grade>] tag
+    must end in a legal strength grade -- "method AND grade must be machine-
+    extractable from the tag" (discovery_prompt_v2_8.md, Provenance tags).
+
+    The grade is the LAST ';'-delimited clause inside the bracket. The
+    method clause may itself contain ':' and ',' (e.g.
+    "[mechanical: Class: = Function: = 172, exact; exhaustive]"), so the
+    grade is split on ';' from the RIGHT, never on ':' or ','.
+
+    Returns the grade string if it is one of rules.LEGAL_GRADES; otherwise
+    None (covers both no-grade and illegal-grade-word -- option-1 scope).
+    """
+    if rules.MECHANICAL_GRADE_SEPARATOR not in token:
+        return None
+    candidate = token.rsplit(rules.MECHANICAL_GRADE_SEPARATOR, 1)[1].strip()
+    return candidate if candidate in rules.LEGAL_GRADES else None
+
+
+def line_has_universal(line):
+    """True if the convention line asserts a universal quantifier.
+
+    v2.8 / rappers-handbook audit: a universal claim ("always", "every",
+    "never", "invariant", "fixed frame") backed only by a `partial` count is
+    a defect -- the count did not settle the universal (the census counted
+    headings; the exceptions lived in its own range). Matched case-
+    insensitively as whole words; the phrase "fixed frame" as a substring.
+    """
+    low = line.lower()
+    for q in rules.UNIVERSAL_QUANTIFIERS:
+        if " " in q:
+            if q in low:
+                return True
+        else:
+            if re.search(rf"\b{re.escape(q)}\b", low):
+                return True
+    return False
+
+
 def is_convention_line(line):
     """A convention line is a TOP-LEVEL bulleted line in the Conventions section.
 
@@ -264,6 +305,26 @@ def check_provenance_tags(master_path, rep):
                 rep.fail("TAG_MECHANICAL_NO_METHOD",
                          f"line {i+1}: [mechanical] without method clause "
                          f"inside the bracket")
+                continue
+            # ...and a legal strength grade as its final ';' clause (v2.8).
+            # Only checked when the method is present, so a bare/method-less
+            # tag raises exactly TAG_MECHANICAL_NO_METHOD, not both (the
+            # selftest's one-code-per-fixture specificity contract).
+            if base == "mechanical" and tag_grade(tok) is None:
+                rep.fail("TAG_NO_GRADE",
+                         f"line {i+1}: [mechanical] tag has no legal strength "
+                         f"grade (expected final ';' clause in "
+                         f"{sorted(rules.LEGAL_GRADES)})")
+                continue
+            # A partial-graded universal is a defect (rappers-handbook class):
+            # the count did not settle the universal. Only reached when the
+            # grade is legal, so this never co-fires with TAG_NO_GRADE.
+            if (base == "mechanical" and tag_grade(tok) == "partial"
+                    and line_has_universal(line)):
+                rep.fail("TAG_PARTIAL_UNIVERSAL",
+                         f"line {i+1}: universal claim carries a 'partial' "
+                         f"grade -- downgrade to 'usually/most' or carry the "
+                         f"exception")
 
 
 def check_forecast_quarantine(run_dir, slug, rep):
