@@ -1,0 +1,9 @@
+section,title,mode,notes
+1,OVERVIEW,prose,"RPN/stack intro, no code"
+2,HOW A TIL WORKS,mixed,prose + figures 2.1-2.6 + listing 3.x refs begin
+3,HUP TWO THREE FOUR,mixed,inner-interpreter prose + pseudo-code listings 3.1/3.2
+4,THE TOWER OF BABEL REVISITED,mixed,defining-words prose + code fragments
+5,ROUTINES ROUTINES ROUTINES,code_listing,core TIL routines; Z80 listings 5.x dominate; figures 5.1-5.8
+6,WORDS WORDS AND MORE WORDS,tabular,172 dictionary entries in labeled template; Class/Function/Code/Bytes
+6.2,A Classy Cross Reference,tabular,keyword-by-class cross-ref lists
+7,EXTENSION PLEASE,mixed,assembler/editor/VM case study; heavy Z80 code + prose + figs 7.1/7.3
