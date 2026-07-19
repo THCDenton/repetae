@@ -8,8 +8,8 @@ Status: conventions ratified 2026-07-14, discovery_prompt_v2.5.
 - Source is a single-volume instructional text, no companion volumes [inferred-confirmed]
 
 ### Naming
-- Chapter headings use title case throughout; 14 of 14 sampled [mechanical] counted across the anchor table
-- Aliases appear as parenthetical glosses on first use [mechanical] census of 62 first-use sites
+- Chapter headings use title case throughout; 14 of 14 sampled [mechanical: counted across the anchor table]
+- Aliases appear as parenthetical glosses on first use [mechanical: census of 62 first-use sites]
 - Domain convention favours the long form in headings [model-knowledge, unverified]
 
 ### Scope
@@ -29,10 +29,10 @@ Status: conventions ratified 2026-07-14, discovery_prompt_v2.5.
 - Expected entity count ~180, openness class moderate, heuristic [default]
 
 ## Config fragment
-- sources[] entry and ingest block emitted below [mechanical] transcribed from the preflight
+- sources[] entry and ingest block emitted below [mechanical: transcribed from the preflight]
 
 ## Kit nominations
-- ch.3 tack collision — tests reduce-side sense merge [mechanical] selected from the watchlist
+- ch.3 tack collision — tests reduce-side sense merge [mechanical: selected from the watchlist]
 
 ## Sidecar manifest
 - harvest_brief_synth.md

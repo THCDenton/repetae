@@ -1,16 +1,23 @@
 """
 Rule definitions for the discovery output validator.
 
-Every constant here traces to an explicit line in discovery_prompt_v2_5.md.
+Every constant here traces to an explicit line in discovery_prompt_v2_8.md.
 Nothing is invented. If a rule is not written down in the prompt, it does
 not appear here.
+
+REBUILD 2026-07-19 (Session C, chunk 1): re-grounded v2.5 -> v2.8. This pass
+fixes the two red selftests (TAG_ILLEGAL specificity; TAG_MECHANICAL_NO_METHOD
+false pass) and re-cites constants to v2.8. The graded-tag grammar, the
+partial-on-universal rule, the container-keyed bound, and the coverage-
+partition lint are Session C chunk 2 -- flagged inline as TODO(chunk-2), not
+built here.
 
 SCOPE (deliberate): this module validates the ENVELOPE only -- the file
 family, master-doc section structure, provenance tags, forecast quarantine,
 and the countable bounds. It does NOT validate the config fragment's field
-names (master doc section 7). That schema boundary is under revision
-(discovery_prompt v2.6 owed) and is explicitly out of scope per the
-P-2/P-3/P-4 sequencing flag in discovery_test_record_v1.md.
+names (master doc section 7). That schema boundary remains out of scope per
+the P-2/P-3/P-4 sequencing flag in discovery_test_record_v1.md; v2.8 keeps it
+a rule-not-copy boundary.
 
 WHAT THIS CANNOT DO: this checks SHAPE, never TRUTH. A fabricated
 [operator-decided] tag on a ruling no operator made is perfectly
@@ -19,7 +26,7 @@ a green verdict from this tool as provenance integrity.
 """
 
 # --- Provenance tags -------------------------------------------------
-# Source: discovery_prompt_v2_5.md "Provenance tags (mandatory on every
+# Source: discovery_prompt_v2_8.md "Provenance tags (mandatory on every
 # convention line)". Closed world. A bare convention line is a defect by
 # the prompt's own definition.
 
@@ -58,7 +65,7 @@ DOWNSTREAM_TAGS = frozenset({"model-vision"})
 ALL_ACCEPTED_TAGS = LEGAL_TAGS | DOWNSTREAM_TAGS
 
 # --- Master doc sections ---------------------------------------------
-# Source: discovery_prompt_v2_5.md "Output family" section 1. Nine sections,
+# Source: discovery_prompt_v2_8.md "Output family" section 1. Nine sections,
 # named, in this order.
 
 MASTER_SECTIONS = (
@@ -74,7 +81,7 @@ MASTER_SECTIONS = (
 )
 
 # --- File family ------------------------------------------------------
-# Source: discovery_prompt_v2_5.md "Output family" sections 1-6.
+# Source: discovery_prompt_v2_8.md "Output family" sections 1-6.
 # <slug> is substituted at check time.
 
 MASTER_DOC = "discovery_{slug}.md"
@@ -88,7 +95,7 @@ SIDECARS = (
 )
 
 # --- Pinned enums -----------------------------------------------------
-# Source: discovery_prompt_v2_5.md section 3 -- "Pinned enum in `mode`".
+# Source: discovery_prompt_v2_8.md section 3 -- "Pinned enum in `mode`".
 
 CONTENT_MODES = frozenset({
     "prose",
@@ -98,7 +105,7 @@ CONTENT_MODES = frozenset({
     "mixed",
 })
 
-# Source: discovery_prompt_v2_5.md section 6 -- chunk plan boundary_type.
+# Source: discovery_prompt_v2_8.md section 6 -- chunk plan boundary_type.
 BOUNDARY_TYPES = frozenset({
     "chapter",
     "section",
@@ -122,11 +129,23 @@ WATCHLIST_MAX_ROWS = 20          # "the reviewed watchlist (<=20 rows...)"
 ESCALATION_MAX_LINES = 12        # "Escalations  <=12 lines each"
 BRIEF_MAX_LINES = 25             # "Hard budget: <=25 lines / ~350 tokens"
 EXHIBIT_MAX_LINES = 5            # "exhibits <=5 lines each, per axis"
-MASTER_MAX_CONVENTION_LINES = 45  # "master doc <= ~45 convention lines"
-MASTER_MAX_TOTAL_LINES = 300     # "<=300 total before the YAML"
+# Source: discovery_prompt_v2_8.md "Bounds (re-ruled in v2.6)". The bound is
+# now CONTAINER-KEYED: born_digital <=50, scan_ocr <=75. v2.5's flat ~45
+# "counted nothing in particular" (first real run: 88 vs 62 on one document).
+# CHUNK-1 SCOPE: only the born_digital default is wired. The validator does
+# not yet read container class off the run.
+# TODO(chunk-2): key this to container class per v2.8 bounds section --
+#   born_digital <=50 / scan_ocr <=75 -- by reading the class from the run
+#   (content_mode_map or master-doc ingest read-back). Until then a scan_ocr
+#   run is checked against the too-strict 50 and may false-flag; note it in
+#   the real-pile findings, do not silently pass it.
+MASTER_MAX_CONVENTION_LINES_BORN_DIGITAL = 50   # "born_digital sources: <=50"
+MASTER_MAX_CONVENTION_LINES_SCAN_OCR = 75       # "scan_ocr sources: <=75"
+MASTER_MAX_CONVENTION_LINES = MASTER_MAX_CONVENTION_LINES_BORN_DIGITAL  # chunk-1 default
+MASTER_MAX_TOTAL_LINES = 300     # "Total master doc <=300 lines before the YAML"
 
 # --- Forecast quarantine ----------------------------------------------
-# Source: discovery_prompt_v2_5.md section 2 complementarity rule --
+# Source: discovery_prompt_v2_8.md section 2 complementarity rule --
 # "NO forecasts and NO arbitration content" in the brief; and section 5 --
 # "NEVER injected into the brief or any worker packet".
 #
@@ -143,7 +162,7 @@ FORECAST_PERMITTED_FILES = (
 )
 
 # --- Status line ------------------------------------------------------
-# Source: discovery_prompt_v2_5.md section 1 -- the master doc's line 2.
+# Source: discovery_prompt_v2_8.md section 1 -- the master doc's line 2.
 STATUS_PREFIX = "Status: conventions ratified"
 
 # --- Registration line ------------------------------------------------

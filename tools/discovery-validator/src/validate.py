@@ -99,14 +99,31 @@ def normalize_tag(token):
 
 
 def tag_has_method(line, token):
-    """A [mechanical] tag needs a method clause -- inside the bracket OR
-    stated in the line's prose. The prompt says 'method in one clause';
-    it does not say the clause must follow the tag.
+    """A [mechanical] tag needs its method INSIDE the bracket.
+
+    REBUILD 2026-07-19 (v2.8): v2.5 allowed the method to live in the line's
+    prose; v2.8 forbids it -- "A bare [mechanical], or one with the method in
+    the line's prose, ... is a defect: method AND grade must be machine-
+    extractable from the tag, not recoverable by reading the sentence"
+    (discovery_prompt_v2_8.md, Provenance tags). This is why the old prose-
+    fallback let TAG_MECHANICAL_NO_METHOD pass: every convention line has prose
+    before its tag, so the fallback was always satisfied.
+
+    Chunk-1 scope: this enforces that SOMETHING rides inside the bracket after
+    `mechanical`. It does NOT yet enforce the `<method>; <grade>` grammar or
+    the grade vocabulary -- that is the graded-tag lint, chunk 2.
+    TODO(chunk-2): require `mechanical: <method>; <grade>` with grade in
+    {exhaustive, sampled, partial}, and the partial-on-universal check.
     """
-    if ":" in token or "," in token or "+" in token:
-        return True                       # qualifier carries it
-    body = line.split("[", 1)[0].strip()  # prose before the tag
-    return len(body.rstrip("-— ").strip()) > 0
+    # token is the raw bracket body, e.g. "mechanical: 21 matches; sampled".
+    # A method is present iff there is a qualifier separator with non-empty
+    # content after it.
+    for sep in (":", ",", "+"):
+        if sep in token:
+            after = token.split(sep, 1)[1].strip()
+            if after:
+                return True
+    return False
 
 
 def is_convention_line(line):
@@ -195,12 +212,19 @@ def check_provenance_tags(master_path, rep):
         return
     start, end = bounds
 
+    # A bracketed token is a CITATION (not a tag, not illegal) if it looks
+    # like [p:89], [fig:3.1], [ch2], etc. Citations ride alongside tags
+    # legally and, on their own, do not make a line tagged.
+    def is_citation(tok):
+        return tok.startswith(("fig:", "p:", "ch")) or bool(re.match(r"^\d", tok))
+
     for i in range(start, end):
         line = lines[i]
         if not is_convention_line(line):
             continue
         all_bracketed = find_tags(line)
 
+        # (a) no brackets at all -> genuinely bare.
         if not all_bracketed:
             rep.fail("TAG_BARE",
                      f"line {i+1}: convention line carries no tag")
@@ -210,28 +234,36 @@ def check_provenance_tags(master_path, rep):
         resolved = [(tok, normalize_tag(tok)) for tok in all_bracketed]
         tag_tokens = [(tok, base) for tok, base in resolved if base]
 
-        # A non-tag bracket is only illegal if the line has NO real tag --
-        # citations like [p:89] or [fig:3.1] ride alongside tags legally.
+        # No legal provenance tag on the line. Decide between ILLEGAL and BARE
+        # -- REBUILD 2026-07-19: these are now MUTUALLY EXCLUSIVE. A line with
+        # an illegal tag token is NOT bare (it has a tag attempt); a line whose
+        # only brackets are citations IS bare (a citation is not a tag). The
+        # old code fired both, failing the selftest's specificity assertion.
         if not tag_tokens:
-            for tok, _ in resolved:
-                if tok.startswith("fig:") or re.match(r"^\d", tok):
-                    continue
-                rep.fail("TAG_ILLEGAL",
-                         f"line {i+1}: '[{tok}]' is not a legal provenance tag")
-            if not any(t.startswith("fig:") for t, _ in resolved):
+            illegal = [tok for tok, _ in resolved if not is_citation(tok)]
+            if illegal:
+                # (b) at least one non-citation bracket that isn't a legal tag.
+                for tok in illegal:
+                    rep.fail("TAG_ILLEGAL",
+                             f"line {i+1}: '[{tok}]' is not a legal "
+                             f"provenance tag")
+            else:
+                # (c) only citations, no tag -> bare.
                 rep.fail("TAG_BARE",
-                         f"line {i+1}: convention line carries no provenance tag")
+                         f"line {i+1}: convention line carries no "
+                         f"provenance tag (only citations)")
             continue
 
         if len(tag_tokens) > 1:
             rep.fail("TAG_MULTIPLE",
                      f"line {i+1}: {len(tag_tokens)} provenance tags, expected 1")
 
-        # [mechanical] requires a method clause -- in the bracket or the prose.
+        # [mechanical] requires its method inside the bracket (v2.8).
         for tok, base in tag_tokens:
             if base == "mechanical" and not tag_has_method(line, tok):
                 rep.fail("TAG_MECHANICAL_NO_METHOD",
-                         f"line {i+1}: [mechanical] without method clause")
+                         f"line {i+1}: [mechanical] without method clause "
+                         f"inside the bracket")
 
 
 def check_forecast_quarantine(run_dir, slug, rep):
@@ -285,7 +317,8 @@ def check_watchlist_bound(master_path, rep):
 
 
 def check_master_bounds(master_path, rep):
-    """Master doc <=300 lines total, <=45 convention lines."""
+    """Master doc <=300 lines total, <=50 convention lines (born_digital
+    default; scan_ocr's <=75 keying is chunk 2 -- see rules.py TODO)."""
     if not master_path.exists():
         return
     lines = read_lines(master_path)
