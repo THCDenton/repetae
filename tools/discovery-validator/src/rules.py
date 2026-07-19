@@ -5,12 +5,14 @@ Every constant here traces to an explicit line in discovery_prompt_v2_8.md.
 Nothing is invented. If a rule is not written down in the prompt, it does
 not appear here.
 
-REBUILD 2026-07-19 (Session C, chunk 1): re-grounded v2.5 -> v2.8. This pass
-fixes the two red selftests (TAG_ILLEGAL specificity; TAG_MECHANICAL_NO_METHOD
-false pass) and re-cites constants to v2.8. The graded-tag grammar, the
-partial-on-universal rule, the container-keyed bound, and the coverage-
-partition lint are Session C chunk 2 -- flagged inline as TODO(chunk-2), not
-built here.
+REBUILD 2026-07-19 (Session C, chunks 1-2): re-grounded v2.5 -> v2.8 and
+banked all five audit-mined lints. Chunk 1 fixed the two red selftests
+(TAG_ILLEGAL specificity; TAG_MECHANICAL_NO_METHOD false pass) and re-cited
+constants to v2.8. Chunk 2 added the five lints: graded-tag grammar
+(TAG_NO_GRADE), partial-on-universal (TAG_PARTIAL_UNIVERSAL), chunk-deferral
+arithmetic (CHUNKPLAN_OVERSIZED), coverage partition (CHUNKPLAN_COVERAGE,
+the P16 lint twin), and the container-keyed convention bound
+(CONVENTIONS_TOO_MANY keyed via CONTAINER_CLASS_MISSING).
 
 SCOPE (deliberate): this module validates the ENVELOPE only -- the file
 family, master-doc section structure, provenance tags, forecast quarantine,
@@ -154,6 +156,50 @@ CHUNK_PLAN_COLUMNS = (
     "notes",
 )
 
+# --- Chunk deferral arithmetic (lint 3, v2.8) ------------------------
+# Source: discovery_prompt_v2_8.md section 6 + the chunk-plan axis:
+# "cut at the source's natural teaching boundary ... a size-bounded
+# fallback for oversized units -- the bound is a per-source button ruling
+# MEASURED against this source's layout ... never a global constant.
+# Fallback splits reference the ruled per-source bound and split at the
+# least-bad ruled boundary."
+#
+# The defect this catches: a NON-fallback boundary (chapter/section/
+# convention) whose est_size exceeds the ruled bound -- it should have been
+# a fallback_split, but was left as an oversized natural unit. Because the
+# bound is per-source and NOT a column in the plan, the plan's own
+# fallback_split rows reveal it: a fallback exists precisely BECAUSE a unit
+# hit the bound, so the smallest fallback_split est_size is an upper witness
+# to where the operator's ruled ceiling sits. Any non-fallback row at or
+# above that witness should itself have been deferred. No global constant is
+# introduced; the arithmetic is against the plan's own declared sizes.
+#
+# est_size grammar: "<number> <unit>" (e.g. "1180 lines"). The unit must be
+# consistent across rows for the comparison to be meaningful; a mixed-unit
+# plan is its own defect (CHUNKPLAN_SIZE_UNIT).
+FALLBACK_BOUNDARY_TYPE = "fallback_split"
+NATURAL_BOUNDARY_TYPES = frozenset({"chapter", "section", "convention"})
+
+# --- Coverage partition (lint 4, v2.8 -- the P16 lint twin) ----------
+# Source: discovery_prompt_v2_8.md section 6 coverage rule: "every in-scope
+# range appears in exactly one chunk ... walk the chunk rows in loc order
+# and confirm each in-scope page lands in exactly one chunk. Any gap OR
+# overlap triggers a MANDATORY re-verification." This is the author-time
+# twin of the same partition check enforced on ingest (schema-lockstep).
+#
+# Enforced by ARITHMETIC on the loc-grammar, never on the plan's narration
+# of itself. The fixtures use the `page.line` grammar; the page is the
+# integer before the dot. Contiguity in loc order:
+#   next.start_page == prev.end_page      -> shared boundary page (LEGAL:
+#                                            v2.8 "shared-boundary case",
+#                                            one page doing double duty)
+#   next.start_page == prev.end_page + 1  -> clean adjacency (LEGAL)
+#   next.start_page  > prev.end_page + 1  -> GAP (the Loeliger p174-179 class)
+#   next.start_page  < prev.end_page      -> OVERLAP
+# Gap and overlap are both hard fails; the shared-boundary touch is the one
+# non-strict adjacency the spec explicitly permits.
+LOC_PAGE_RE = r"^\s*(\d+)"   # leading integer of a page.line location
+
 # --- Countable bounds -------------------------------------------------
 # Every bound below is stated numerically in the prompt.
 
@@ -162,18 +208,28 @@ ESCALATION_MAX_LINES = 12        # "Escalations  <=12 lines each"
 BRIEF_MAX_LINES = 25             # "Hard budget: <=25 lines / ~350 tokens"
 EXHIBIT_MAX_LINES = 5            # "exhibits <=5 lines each, per axis"
 # Source: discovery_prompt_v2_8.md "Bounds (re-ruled in v2.6)". The bound is
-# now CONTAINER-KEYED: born_digital <=50, scan_ocr <=75. v2.5's flat ~45
+# CONTAINER-KEYED: born_digital <=50, scan_ocr <=75. v2.5's flat ~45
 # "counted nothing in particular" (first real run: 88 vs 62 on one document).
-# CHUNK-1 SCOPE: only the born_digital default is wired. The validator does
-# not yet read container class off the run.
-# TODO(chunk-2): key this to container class per v2.8 bounds section --
-#   born_digital <=50 / scan_ocr <=75 -- by reading the class from the run
-#   (content_mode_map or master-doc ingest read-back). Until then a scan_ocr
-#   run is checked against the too-strict 50 and may false-flag; note it in
-#   the real-pile findings, do not silently pass it.
+#
+# LINT 5 (Session C chunk 2): the validator now READS the container class
+# from the master doc's ingest read-back and keys the bound to it. v2.8:
+# "The container class is known at Ingest, before any convention is written,
+# so the applicable bound is known too -- state it in the read-back." The
+# read-back line is a convention line in the ## Conventions Identity/Ingest
+# axis carrying `container: born_digital` or `container: scan_ocr`. If the
+# read-back is ABSENT the validator cannot key the bound and says so
+# (CONTAINER_CLASS_MISSING) rather than silently applying the strict default
+# -- an unstated class was itself the ambiguity v2.6 killed. The bound is
+# never guessed from file contents; it is read from the run's own statement.
 MASTER_MAX_CONVENTION_LINES_BORN_DIGITAL = 50   # "born_digital sources: <=50"
 MASTER_MAX_CONVENTION_LINES_SCAN_OCR = 75       # "scan_ocr sources: <=75"
-MASTER_MAX_CONVENTION_LINES = MASTER_MAX_CONVENTION_LINES_BORN_DIGITAL  # chunk-1 default
+
+# The read-back marker the validator scans for, and the class -> bound map.
+CONTAINER_CLASS_MARKER = "container:"
+CONTAINER_BOUNDS = {
+    "born_digital": MASTER_MAX_CONVENTION_LINES_BORN_DIGITAL,
+    "scan_ocr": MASTER_MAX_CONVENTION_LINES_SCAN_OCR,
+}
 MASTER_MAX_TOTAL_LINES = 300     # "Total master doc <=300 lines before the YAML"
 
 # --- Forecast quarantine ----------------------------------------------

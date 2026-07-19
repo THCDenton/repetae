@@ -5,12 +5,11 @@ Status: conventions ratified 2026-07-14, discovery_prompt_v2.5.
 
 ### Identity
 - Preflight attestation recorded against the ClearScan text layer [operator-decided]
-- Ingest read-back: container: born_digital, single text layer, no OCR repair needed [mechanical: preflight container probe; exhaustive]
 - Source is a single-volume instructional text, no companion volumes [inferred-confirmed]
 
 ### Naming
 - Chapter headings use title case throughout; 14 of 14 sampled [mechanical: counted across the anchor table; exhaustive]
-- Aliases appear as parenthetical glosses on first use [mechanical]
+- Aliases appear as parenthetical glosses on first use [mechanical: census of 62 first-use sites; exhaustive]
 - Domain convention favours the long form in headings [model-knowledge, unverified]
 
 ### Scope

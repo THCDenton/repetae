@@ -167,6 +167,41 @@ def _(d):
          "c03,fallback_split,55.1,70.12,1400 lines,~")
 
 
+@case("CHUNKPLAN_OVERSIZED")
+def _(d):
+    # Lint 3: c03 is a fallback_split at 1400 lines -> witnesses the ruled
+    # bound. Bloat a NATURAL boundary (c01, chapter) to meet/exceed it, so it
+    # should itself have been deferred. Keeps coverage intact (same locs) and
+    # est_size unit consistent, so only CHUNKPLAN_OVERSIZED fires.
+    edit(d / "chunk_plan_synth.csv",
+         "c01,chapter,1.1,41.22,1180 lines,~",
+         "c01,chapter,1.1,41.22,1500 lines,~")
+
+
+@case("CHUNKPLAN_COVERAGE")
+def _(d):
+    # Lint 4: open a gap. c02 ends at page 54; c04 starts at page 70. Move
+    # c04's start forward so pages between c02.end and c04.start go
+    # unassigned -- but the valid plan has c03 (55-70) covering that range,
+    # so instead drop c03's coverage by shrinking it to leave a gap after 54.
+    # Simplest single-rule break: shift c04 start to 72, leaving 71 unassigned.
+    edit(d / "chunk_plan_synth.csv",
+         "c04,section,70.13,88.41,1020 lines,~",
+         "c04,section,72.1,88.41,1020 lines,~")
+
+
+@case("CONTAINER_CLASS_MISSING")
+def _(d):
+    # Lint 5: remove the container read-back line -> the bound cannot be
+    # keyed. The remaining Identity lines stay valid, so only
+    # CONTAINER_CLASS_MISSING fires.
+    edit(d / "discovery_synth.md",
+         "- Ingest read-back: container: born_digital, single text layer, "
+         "no OCR repair needed [mechanical: preflight container probe; "
+         "exhaustive]\n",
+         "")
+
+
 @case("CHUNKPLAN_COLUMNS")
 def _(d):
     edit(d / "chunk_plan_synth.csv",

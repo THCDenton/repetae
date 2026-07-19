@@ -109,11 +109,11 @@ def tag_has_method(line, token):
     fallback let TAG_MECHANICAL_NO_METHOD pass: every convention line has prose
     before its tag, so the fallback was always satisfied.
 
-    Chunk-1 scope: this enforces that SOMETHING rides inside the bracket after
-    `mechanical`. It does NOT yet enforce the `<method>; <grade>` grammar or
-    the grade vocabulary -- that is the graded-tag lint, chunk 2.
-    TODO(chunk-2): require `mechanical: <method>; <grade>` with grade in
-    {exhaustive, sampled, partial}, and the partial-on-universal check.
+    This function enforces only that SOMETHING rides inside the bracket after
+    `mechanical` (method presence). The `<method>; <grade>` grade grammar and
+    the grade vocabulary are enforced separately by tag_grade() and wired into
+    check_provenance_tags after this check, so a method-less tag raises
+    exactly TAG_MECHANICAL_NO_METHOD (the specificity contract).
     """
     # token is the raw bracket body, e.g. "mechanical: 21 matches; sampled".
     # A method is present iff there is a qualifier separator with non-empty
@@ -145,6 +145,56 @@ def tag_grade(token):
         return None
     candidate = token.rsplit(rules.MECHANICAL_GRADE_SEPARATOR, 1)[1].strip()
     return candidate if candidate in rules.LEGAL_GRADES else None
+
+
+def parse_est_size(cell):
+    """(value:int, unit:str) from an est_size cell like '1180 lines'.
+
+    Returns (None, None) if the cell has no leading integer. The unit is
+    everything after the number, stripped -- used to detect a mixed-unit
+    plan, which makes the deferral comparison meaningless.
+    """
+    m = re.match(r"\s*(\d+)\s*(.*)$", cell or "")
+    if not m:
+        return (None, None)
+    return (int(m.group(1)), m.group(2).strip())
+
+
+def loc_page(cell):
+    """The integer page component of a page.line location, or None.
+
+    The proven fixture loc-grammar is `page.line` (e.g. '42.17'); the page
+    is the integer before the dot. Locations that don't lead with an
+    integer return None -- the coverage arithmetic skips them and says so
+    rather than guessing.
+    """
+    m = re.match(rules.LOC_PAGE_RE, cell or "")
+    return int(m.group(1)) if m else None
+
+
+def read_container_class(master_path):
+    """The declared container class ('born_digital'|'scan_ocr'), or None.
+
+    v2.8: the class is stated in the ingest read-back as a convention line
+    carrying `container: <class>`. Read from the run's own statement, never
+    inferred from file contents. Returns the first legal class found in the
+    Conventions section, or None if no read-back line is present.
+    """
+    if not master_path.exists():
+        return None
+    lines = read_lines(master_path)
+    bounds = section_bounds(lines, "Conventions")
+    if bounds is None:
+        return None
+    start, end = bounds
+    for i in range(start, end):
+        low = lines[i].lower()
+        if rules.CONTAINER_CLASS_MARKER in low:
+            after = low.split(rules.CONTAINER_CLASS_MARKER, 1)[1]
+            for cls in rules.CONTAINER_BOUNDS:
+                if re.search(rf"\b{re.escape(cls)}\b", after):
+                    return cls
+    return None
 
 
 def line_has_universal(line):
@@ -378,8 +428,10 @@ def check_watchlist_bound(master_path, rep):
 
 
 def check_master_bounds(master_path, rep):
-    """Master doc <=300 lines total, <=50 convention lines (born_digital
-    default; scan_ocr's <=75 keying is chunk 2 -- see rules.py TODO)."""
+    """Master doc <=300 lines total; convention lines <= the CONTAINER-KEYED
+    bound (born_digital <=50, scan_ocr <=75), read from the run's ingest
+    read-back. Lint 5 (Session C chunk 2): the bound is no longer a hardcoded
+    default -- it is keyed to the declared container class."""
     if not master_path.exists():
         return
     lines = read_lines(master_path)
@@ -387,13 +439,26 @@ def check_master_bounds(master_path, rep):
               f"master doc: {len(lines)} lines > {rules.MASTER_MAX_TOTAL_LINES}")
 
     bounds = section_bounds(lines, "Conventions")
-    if bounds:
-        start, end = bounds
-        conv = [ln for ln in lines[start:end] if is_convention_line(ln)]
-        rep.check(len(conv) <= rules.MASTER_MAX_CONVENTION_LINES,
-                  "CONVENTIONS_TOO_MANY",
-                  f"{len(conv)} convention lines > "
-                  f"{rules.MASTER_MAX_CONVENTION_LINES}")
+    if not bounds:
+        return
+    start, end = bounds
+    conv = [ln for ln in lines[start:end] if is_convention_line(ln)]
+
+    container = read_container_class(master_path)
+    if container is None:
+        # v2.8: the class is known at Ingest and MUST be stated in the
+        # read-back. Absent, the validator cannot key the bound -- it says so
+        # rather than silently applying the strict default (an unstated class
+        # was the ambiguity v2.6 killed).
+        rep.fail("CONTAINER_CLASS_MISSING",
+                 "no 'container: <born_digital|scan_ocr>' read-back line in "
+                 "## Conventions; cannot key the convention-line bound")
+        return
+
+    bound = rules.CONTAINER_BOUNDS[container]
+    rep.check(len(conv) <= bound, "CONVENTIONS_TOO_MANY",
+              f"{len(conv)} convention lines > {bound} "
+              f"(container: {container})")
 
 
 def check_mode_map(run_dir, slug, rep):
@@ -427,10 +492,20 @@ def check_mode_map(run_dir, slug, rep):
 
 
 def check_chunk_plan(run_dir, slug, rep):
-    """chunk_plan: declared columns, boundary_type enum."""
+    """chunk_plan: declared columns, boundary_type enum, deferral arithmetic,
+    coverage partition.
+
+    Lints 3-4 (Session C chunk 2) run arithmetic across the collected rows:
+      - CHUNKPLAN_OVERSIZED: a natural (non-fallback) boundary whose est_size
+        meets or exceeds the ruled bound witnessed by the smallest
+        fallback_split -- it should itself have been deferred.
+      - CHUNKPLAN_COVERAGE: walk rows in loc order; every in-scope page in
+        exactly one chunk. Gap or overlap = hard fail (the P16 lint twin).
+    """
     path = run_dir / f"chunk_plan_{slug}.csv"
     if not path.exists():
         return
+    rows = []
     with path.open(encoding="utf-8") as fh:
         reader = csv.DictReader(fh)
         if reader.fieldnames is None:
@@ -440,16 +515,111 @@ def check_chunk_plan(run_dir, slug, rep):
         rep.check(got == rules.CHUNK_PLAN_COLUMNS, "CHUNKPLAN_COLUMNS",
                   f"columns {got} != {rules.CHUNK_PLAN_COLUMNS}")
         for i, row in enumerate(reader, start=2):
+            rows.append((i, row))
             bt = (row.get("boundary_type") or "").strip()
             if bt not in rules.BOUNDARY_TYPES:
                 rep.fail("CHUNKPLAN_BAD_ENUM",
                          f"row {i}: boundary_type '{bt}' not in "
                          f"{sorted(rules.BOUNDARY_TYPES)}")
-            if bt == "fallback_split":
+            if bt == rules.FALLBACK_BOUNDARY_TYPE:
                 notes = (row.get("notes") or "").strip()
                 if not notes or notes == "~":
                     rep.fail("CHUNKPLAN_NO_REASON",
                              f"row {i}: fallback_split without notes reason")
+
+    # If the header was malformed the rows are unreliable; the columns check
+    # already fired, so skip the arithmetic rather than pile on non-specific
+    # noise.
+    if got != rules.CHUNK_PLAN_COLUMNS:
+        return
+
+    _check_chunk_deferral(rows, rep)
+    _check_chunk_coverage(rows, rep)
+
+
+def _check_chunk_deferral(rows, rep):
+    """Lint 3: a natural boundary >= the ruled bound should have deferred.
+
+    The ruled per-source bound is not a column, so the plan's own
+    fallback_split rows witness it: a fallback exists because a unit hit the
+    bound. The smallest fallback est_size is an upper witness to the ceiling;
+    any natural boundary at or above it should itself have been a
+    fallback_split. If there is no fallback_split row, there is no witnessed
+    bound and this lint is silent (nothing in the plan states the ceiling).
+    """
+    sizes = {}   # row_i -> (value, unit)
+    units = set()
+    for i, row in rows:
+        val, unit = parse_est_size(row.get("est_size", ""))
+        if val is not None:
+            sizes[i] = (val, unit)
+            if unit:
+                units.add(unit)
+
+    if len(units) > 1:
+        rep.fail("CHUNKPLAN_SIZE_UNIT",
+                 f"est_size units are mixed ({sorted(units)}); "
+                 f"deferral arithmetic needs one unit")
+        return
+
+    fallback_sizes = [
+        sizes[i][0] for i, row in rows
+        if (row.get("boundary_type") or "").strip() == rules.FALLBACK_BOUNDARY_TYPE
+        and i in sizes
+    ]
+    if not fallback_sizes:
+        return   # no witnessed bound in this plan
+    witness = min(fallback_sizes)
+
+    for i, row in rows:
+        bt = (row.get("boundary_type") or "").strip()
+        if bt in rules.NATURAL_BOUNDARY_TYPES and i in sizes:
+            if sizes[i][0] >= witness:
+                rep.fail("CHUNKPLAN_OVERSIZED",
+                         f"row {i}: '{bt}' chunk est_size {sizes[i][0]} "
+                         f">= ruled bound (witnessed by smallest "
+                         f"fallback_split = {witness}); should be deferred")
+
+
+def _check_chunk_coverage(rows, rep):
+    """Lint 4 (P16 twin): every in-scope page in exactly one chunk.
+
+    Walk rows in loc order. A shared boundary page (next.start == prev.end)
+    is legal per v2.8; a gap (start > prev.end + 1) or overlap
+    (start < prev.end) is a hard fail. Rows whose locations don't parse are
+    reported once, not silently skipped -- an unparseable loc means coverage
+    can't be certified.
+    """
+    spans = []
+    for i, row in rows:
+        p_start = loc_page(row.get("loc_start", ""))
+        p_end = loc_page(row.get("loc_end", ""))
+        if p_start is None or p_end is None:
+            rep.fail("CHUNKPLAN_COVERAGE",
+                     f"row {i}: loc_start/loc_end not in page.line grammar "
+                     f"({row.get('loc_start')!r}, {row.get('loc_end')!r}); "
+                     f"coverage cannot be verified")
+            return
+        if p_end < p_start:
+            rep.fail("CHUNKPLAN_COVERAGE",
+                     f"row {i}: loc_end page {p_end} precedes loc_start "
+                     f"page {p_start}")
+            return
+        spans.append((p_start, p_end, i))
+
+    spans.sort()
+    for (prev_start, prev_end, prev_i), (start, end, i) in zip(spans, spans[1:]):
+        if start < prev_end:
+            rep.fail("CHUNKPLAN_COVERAGE",
+                     f"row {i}: page {start} overlaps chunk ending at "
+                     f"page {prev_end} (row {prev_i})")
+            return
+        if start > prev_end + 1:
+            rep.fail("CHUNKPLAN_COVERAGE",
+                     f"row {i}: gap -- pages {prev_end + 1}..{start - 1} "
+                     f"unassigned between chunk ending at {prev_end} "
+                     f"(row {prev_i}) and this chunk starting at {start}")
+            return
 
 
 def check_escalation_bounds(master_path, rep):

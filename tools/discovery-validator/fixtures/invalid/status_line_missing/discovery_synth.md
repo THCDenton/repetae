@@ -5,6 +5,7 @@ Ratified on 2026-07-14.
 
 ### Identity
 - Preflight attestation recorded against the ClearScan text layer [operator-decided]
+- Ingest read-back: container: born_digital, single text layer, no OCR repair needed [mechanical: preflight container probe; exhaustive]
 - Source is a single-volume instructional text, no companion volumes [inferred-confirmed]
 
 ### Naming
