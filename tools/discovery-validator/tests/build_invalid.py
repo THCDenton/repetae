@@ -167,15 +167,18 @@ def _(d):
          "c03,fallback_split,55.1,70.12,1400 lines,~")
 
 
-@case("CHUNKPLAN_OVERSIZED")
+@case("CHUNKPLAN_SIZE_UNIT")
 def _(d):
-    # Lint 3: c03 is a fallback_split at 1400 lines -> witnesses the ruled
-    # bound. Bloat a NATURAL boundary (c01, chapter) to meet/exceed it, so it
-    # should itself have been deferred. Keeps coverage intact (same locs) and
-    # est_size unit consistent, so only CHUNKPLAN_OVERSIZED fires.
+    # Lint 3 (F3, chunk 3): the deferral bound heuristic was RETIRED (no
+    # trustworthy in-band witness of the ruled bound exists), so
+    # CHUNKPLAN_OVERSIZED no longer fires and its fixture is retired with it.
+    # The surviving live check in _check_chunk_deferral is the mixed-unit
+    # guard: est_size units must be consistent for any size arithmetic to be
+    # meaningful. Give one row a different unit so only CHUNKPLAN_SIZE_UNIT
+    # fires. Coverage/locs untouched.
     edit(d / "chunk_plan_synth.csv",
-         "c01,chapter,1.1,41.22,1180 lines,~",
-         "c01,chapter,1.1,41.22,1500 lines,~")
+         "c02,chapter,42.1,54.19,940 lines,~",
+         "c02,chapter,42.1,54.19,940 tokens,~")
 
 
 @case("CHUNKPLAN_COVERAGE")

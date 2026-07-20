@@ -160,13 +160,53 @@ def parse_est_size(cell):
     return (int(m.group(1)), m.group(2).strip())
 
 
-def loc_page(cell):
-    """The integer page component of a page.line location, or None.
+def read_loc_grammar(master_path):
+    """The declared loc-grammar string from the registration line, or None.
 
-    The proven fixture loc-grammar is `page.line` (e.g. '42.17'); the page
-    is the integer before the dot. Locations that don't lead with an
-    integer return None -- the coverage arithmetic skips them and says so
-    rather than guessing.
+    v2.8: the run proves its own loc-grammar and states it as the final field
+    of the registration line (`... | loc-grammar: <grammar>`). Coverage
+    arithmetic reads the page component UNDER that declared grammar rather
+    than assuming a fixed shape (F1, Session C chunk 3). Returns the grammar
+    text after the prefix, or None if there is no parseable registration line.
+    """
+    if not master_path.exists():
+        return None
+    lines = [ln for ln in read_lines(master_path) if ln.strip()]
+    if not lines:
+        return None
+    last = lines[-1].strip()
+    if not last.startswith("- "):
+        return None
+    parts = [p.strip() for p in last[2:].split("|")]
+    if not parts:
+        return None
+    final = parts[-1]
+    if not final.startswith(rules.REGISTRATION_GRAMMAR_PREFIX):
+        return None
+    return final[len(rules.REGISTRATION_GRAMMAR_PREFIX):].strip()
+
+
+def grammar_is_page_resolvable(grammar):
+    """True if the declared grammar names a page unit we can extract from.
+
+    Applied by the coverage lint before it trusts loc_page() output: a
+    page-based grammar (page.line, `page N + §N.M`, `p<N>`) resolves to an
+    integer page; anything else is reported uncertifiable, never guessed.
+    """
+    if not grammar:
+        return False
+    low = grammar.lower()
+    return any(m in low for m in rules.PAGE_GRAMMAR_MARKERS)
+
+
+def loc_page(cell):
+    """The integer page component of a location under a page-based grammar.
+
+    F1 (Session C chunk 3): the loc-grammar is per-source and proven, not a
+    fixed `page.line`. The page is the first run of digits in the locator,
+    whether written `173.4` (page.line), `p173` / `p2` (pN), or `173`. An
+    optional leading `p` is tolerated. Locators with no digits return None --
+    the coverage arithmetic reports them rather than guessing.
     """
     m = re.match(rules.LOC_PAGE_RE, cell or "")
     return int(m.group(1)) if m else None
@@ -175,25 +215,31 @@ def loc_page(cell):
 def read_container_class(master_path):
     """The declared container class ('born_digital'|'scan_ocr'), or None.
 
-    v2.8: the class is stated in the ingest read-back as a convention line
-    carrying `container: <class>`. Read from the run's own statement, never
-    inferred from file contents. Returns the first legal class found in the
-    Conventions section, or None if no read-back line is present.
+    v2.8: the class is stated in the ingest read-back, known at Ingest before
+    any convention is written. Read from the run's own statement, never
+    inferred from file contents.
+
+    F2 (Session C chunk 3): envelope-0 matched only the exact fixture string
+    `container:` (lowercase, colon) inside ## Conventions. Both real piles
+    DECLARE the class plainly but in forms that string missed -- rappers
+    "Container `born_digital`" (capitalized, backtick, no colon) in its
+    ## Ingest read-back, Loeliger "container `scan_ocr`" likewise. The reader
+    now scans the whole master doc case-insensitively for the word
+    "container" followed, within a short window, by a legal class token
+    (tolerating a colon, a space, or a backtick between them). The HALT-on-
+    absent behavior is unchanged: a class genuinely nowhere stated still
+    returns None and raises CONTAINER_CLASS_MISSING. Only the reader widened;
+    the refusal-to-guess discipline (v2.6 lesson) holds.
     """
     if not master_path.exists():
         return None
-    lines = read_lines(master_path)
-    bounds = section_bounds(lines, "Conventions")
-    if bounds is None:
-        return None
-    start, end = bounds
-    for i in range(start, end):
-        low = lines[i].lower()
-        if rules.CONTAINER_CLASS_MARKER in low:
-            after = low.split(rules.CONTAINER_CLASS_MARKER, 1)[1]
-            for cls in rules.CONTAINER_BOUNDS:
-                if re.search(rf"\b{re.escape(cls)}\b", after):
-                    return cls
+    text = master_path.read_text(encoding="utf-8")
+    low = text.lower()
+    for m in re.finditer(r"container", low):
+        window = low[m.end():m.end() + 40]
+        for cls in rules.CONTAINER_BOUNDS:
+            if re.search(rf"[:`\s]+{re.escape(cls)}\b", window):
+                return cls
     return None
 
 
@@ -534,27 +580,40 @@ def check_chunk_plan(run_dir, slug, rep):
         return
 
     _check_chunk_deferral(rows, rep)
-    _check_chunk_coverage(rows, rep)
+    _check_chunk_coverage(rows, rep, run_dir, slug)
 
 
 def _check_chunk_deferral(rows, rep):
-    """Lint 3: a natural boundary >= the ruled bound should have deferred.
+    """Lint 3: a natural boundary over the ruled bound should have deferred.
 
-    The ruled per-source bound is not a column, so the plan's own
-    fallback_split rows witness it: a fallback exists because a unit hit the
-    bound. The smallest fallback est_size is an upper witness to the ceiling;
-    any natural boundary at or above it should itself have been a
-    fallback_split. If there is no fallback_split row, there is no witnessed
-    bound and this lint is silent (nothing in the plan states the ceiling).
+    RETIRED WITNESS (Session C chunk 3, F3): envelope-0 witnessed the ruled
+    per-source bound from the SMALLEST fallback_split est_size. That is wrong
+    by construction -- a fallback split produces fragments SMALLER than the
+    bound (it exists to get under it), so the smallest fragment systematically
+    under-reads the ceiling. On the rappers pile it flagged 14 chapters at
+    >=1400 when the plan's own stated bound was 4500; it passed the fixture
+    only because there the smallest fallback happened to equal the bound.
+
+    The honest finding: there is NO reliable machine-readable witness of the
+    ruled bound in the current chunk-plan schema. The bound lives in free-text
+    notes on some fallback rows ("chapter=4903 tok exceeds ruled 4500 bound")
+    and not at all on others, and the fixture states no number. Parsing it out
+    of prose is exactly the brittle narration-archaeology the coverage rule
+    forbids ("arithmetic on the loc-grammar, never on the plan's narration").
+
+    So this lint stays SILENT rather than compute a number it cannot trust --
+    a mis-set bound firing on every run is the wart the project keeps warning
+    against. The mixed-unit guard (a real, in-band, arithmetic check) is kept;
+    it needs no bound. Re-enabling deferral arithmetic is docketed: it needs
+    an explicit machine-readable bound (a `ruled_bound` column or a pinned
+    config field), NOT a heuristic. Until that schema exists, absence of this
+    check is recorded as absence-of-evidence, never as a pass.
     """
-    sizes = {}   # row_i -> (value, unit)
     units = set()
     for i, row in rows:
         val, unit = parse_est_size(row.get("est_size", ""))
-        if val is not None:
-            sizes[i] = (val, unit)
-            if unit:
-                units.add(unit)
+        if val is not None and unit:
+            units.add(unit)
 
     if len(units) > 1:
         rep.fail("CHUNKPLAN_SIZE_UNIT",
@@ -562,41 +621,50 @@ def _check_chunk_deferral(rows, rep):
                  f"deferral arithmetic needs one unit")
         return
 
-    fallback_sizes = [
-        sizes[i][0] for i, row in rows
-        if (row.get("boundary_type") or "").strip() == rules.FALLBACK_BOUNDARY_TYPE
-        and i in sizes
-    ]
-    if not fallback_sizes:
-        return   # no witnessed bound in this plan
-    witness = min(fallback_sizes)
-
-    for i, row in rows:
-        bt = (row.get("boundary_type") or "").strip()
-        if bt in rules.NATURAL_BOUNDARY_TYPES and i in sizes:
-            if sizes[i][0] >= witness:
-                rep.fail("CHUNKPLAN_OVERSIZED",
-                         f"row {i}: '{bt}' chunk est_size {sizes[i][0]} "
-                         f">= ruled bound (witnessed by smallest "
-                         f"fallback_split = {witness}); should be deferred")
+    # No trustworthy in-band witness of the ruled bound exists in the current
+    # schema (see docstring). CHUNKPLAN_OVERSIZED is intentionally not raised
+    # here; re-enable only against an explicit bound field. [F3, chunk 3]
+    return
 
 
-def _check_chunk_coverage(rows, rep):
+def _check_chunk_coverage(rows, rep, run_dir, slug):
     """Lint 4 (P16 twin): every in-scope page in exactly one chunk.
 
     Walk rows in loc order. A shared boundary page (next.start == prev.end)
     is legal per v2.8; a gap (start > prev.end + 1) or overlap
-    (start < prev.end) is a hard fail. Rows whose locations don't parse are
-    reported once, not silently skipped -- an unparseable loc means coverage
-    can't be certified.
+    (start < prev.end) is a hard fail.
+
+    F1 (Session C chunk 3): the page component is read under the run's OWN
+    declared loc-grammar (registration line), not a hardcoded `page.line`.
+    If the declared grammar is not page-resolvable, coverage is reported
+    uncertifiable once -- the same HALT-don't-guess posture lint 5 uses for
+    an absent container class. If a grammar IS page-based but an individual
+    row's locator carries no page integer, that row violates its own declared
+    grammar and is reported (a real defect, not a validator assumption).
     """
+    master = run_dir / rules.MASTER_DOC.format(slug=slug)
+    grammar = read_loc_grammar(master)
+    if grammar is None:
+        # The registration line is missing or malformed -- that defect is
+        # owned by check_registration_line (REGISTRATION_MISSING / _FIELDS /
+        # _GRAMMAR). Coverage stays silent rather than co-fire; without a
+        # readable registration line there is no grammar to verify against,
+        # and piling on a second code would break the specificity contract.
+        return
+    if not grammar_is_page_resolvable(grammar):
+        rep.fail("CHUNKPLAN_COVERAGE",
+                 f"declared loc-grammar {grammar!r} is not page-resolvable; "
+                 f"coverage cannot be verified by page arithmetic")
+        return
+
     spans = []
     for i, row in rows:
         p_start = loc_page(row.get("loc_start", ""))
         p_end = loc_page(row.get("loc_end", ""))
         if p_start is None or p_end is None:
             rep.fail("CHUNKPLAN_COVERAGE",
-                     f"row {i}: loc_start/loc_end not in page.line grammar "
+                     f"row {i}: loc_start/loc_end carry no page under declared "
+                     f"grammar {grammar!r} "
                      f"({row.get('loc_start')!r}, {row.get('loc_end')!r}); "
                      f"coverage cannot be verified")
             return

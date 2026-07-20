@@ -188,8 +188,7 @@ NATURAL_BOUNDARY_TYPES = frozenset({"chapter", "section", "convention"})
 # twin of the same partition check enforced on ingest (schema-lockstep).
 #
 # Enforced by ARITHMETIC on the loc-grammar, never on the plan's narration
-# of itself. The fixtures use the `page.line` grammar; the page is the
-# integer before the dot. Contiguity in loc order:
+# of itself. Contiguity in loc order:
 #   next.start_page == prev.end_page      -> shared boundary page (LEGAL:
 #                                            v2.8 "shared-boundary case",
 #                                            one page doing double duty)
@@ -198,7 +197,32 @@ NATURAL_BOUNDARY_TYPES = frozenset({"chapter", "section", "convention"})
 #   next.start_page  < prev.end_page      -> OVERLAP
 # Gap and overlap are both hard fails; the shared-boundary touch is the one
 # non-strict adjacency the spec explicitly permits.
-LOC_PAGE_RE = r"^\s*(\d+)"   # leading integer of a page.line location
+#
+# F1 fix (Session C chunk 3, real-pile shakedown): the loc-grammar is
+# PER-SOURCE and PROVEN, not a fixed `page.line` -- v2.8 line 290 ("propose
+# a mechanically resolvable grammar") and line 561 ("locations in the proven
+# loc-grammar"). The run declares its grammar in the registration line's
+# final field (`loc-grammar: <grammar>`). Envelope-0 hardcoded `page.line`
+# and rejected every legitimate `pN` page locator as unparseable -- it
+# false-RED both real piles (Loeliger `page N + §N.M`, rappers `p<N>`) and
+# masked the very coverage gap it was built to catch. Both real piles proved
+# PAGE-BASED grammars. The page component is the first run of digits in the
+# locator, whether written `173.4` (page.line), `p173` (pN), or `173`. This
+# extraction is applied only when the declared grammar is PAGE-RESOLVABLE
+# (see PAGE_GRAMMAR_MARKERS); a grammar that does not resolve to a page
+# yields uncertifiable coverage (reported, never guessed) -- the same
+# HALT-don't-guess discipline lint 5 uses for an absent container class.
+LOC_PAGE_RE = r"\s*p?\s*(\d+)"   # first page integer, optional 'p' prefix
+
+# A declared loc-grammar is page-resolvable if its text names a page unit we
+# can extract an integer page from. Both real piles and the fixture qualify:
+#   "page.line"                  -> fixture
+#   "page N + §N.M[.K]"          -> Loeliger
+#   "p<N>, N = printed page"     -> rappers
+# Matched case-insensitively as a substring on the declared grammar string.
+# If none match, the grammar is not known to be page-based and coverage is
+# reported uncertifiable rather than assumed.
+PAGE_GRAMMAR_MARKERS = ("page", "p<n>", "p ")
 
 # --- Countable bounds -------------------------------------------------
 # Every bound below is stated numerically in the prompt.
